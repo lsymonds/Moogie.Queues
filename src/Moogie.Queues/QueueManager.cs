@@ -42,7 +42,7 @@ namespace Moogie.Queues
         public async Task<DispatchResponse> Dispatch(Dispatchable dispatchable)
         {
             DispatchableValidator.Validate(dispatchable);
-            return await GetProvider(dispatchable.Queue).Dispatch(dispatchable);
+            return await GetProvider(dispatchable.Queue).Dispatch(dispatchable).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -54,11 +54,10 @@ namespace Moogie.Queues
         /// <returns>
         /// An awaitable task yielding the response from the attempt to receive the message(s) from the queue.
         /// </returns>
-        public Task<ReceiveResponse> Receive(Receivable receivable)
+        public async Task<ReceiveResponse> Receive(Receivable receivable)
         {
             ReceivableValidator.Validate(receivable);
-
-            throw new System.NotImplementedException();
+            return await GetProvider(receivable.Queue).Receive(receivable).ConfigureAwait(false);
         }
 
         private IQueueProvider GetProvider(string queue)

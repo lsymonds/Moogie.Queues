@@ -13,11 +13,10 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> ValidationEntities = new[]
         {
             new object[] { null!, typeof(ArgumentNullException) },
-            new object[] { new Dispatchable(), typeof(MissingQueueException) },
-            new object[] { new Dispatchable { Queue = "foo" }, typeof(MissingContentException) },
+            new object[] { Dispatchable.OnQueue("foo"), typeof(MissingContentException) },
             new object[]
             {
-                new Dispatchable { Queue = "foo", Content = "abc", Expiry = DateTime.Now.AddDays(-1) },
+                Dispatchable.OnQueue("foo").WithContent("abc").ExpireAt(DateTime.Now.AddDays(-1)),
                 typeof(InvalidDispatchableExpiryException)
             }
         };
@@ -37,7 +36,7 @@ namespace Moogie.Queues.Tests
         public async Task It_Throws_An_Exception_When_An_Attempt_Is_Made_To_Add_A_Message_To_A_Non_Existent_Queue()
         {
             // Arrange & Act.
-            async Task Act() => await _queueManager.Dispatch(new Dispatchable().OnQueue("random").WithContent("foo"));
+            async Task Act() => await _queueManager.Dispatch(Dispatchable.OnQueue("random").WithContent("foo"));
 
             // Assert.
             await Assert.ThrowsAsync<NoRegisteredQueueException>(Act);
@@ -59,14 +58,14 @@ namespace Moogie.Queues.Tests
             var expiry = DateTime.Now.AddMonths(1);
 
             // Act.
-            await _queueManager.Dispatch(new Dispatchable()
-                .WithId(id)
+            await _queueManager.Dispatch(Dispatchable
                 .OnQueue("provider-one")
+                .WithId(id)
                 .WithContent("hello, provider one"));
 
-            await _queueManager.Dispatch(new Dispatchable()
-                .WithId(secondId)
+            await _queueManager.Dispatch(Dispatchable
                 .OnQueue("provider-two")
+                .WithId(secondId)
                 .WithContent("hello, provider two")
                 .ExpireAt(expiry));
 

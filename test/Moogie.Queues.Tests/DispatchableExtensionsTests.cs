@@ -12,7 +12,7 @@ namespace Moogie.Queues.Tests
             var guid = Guid.NewGuid();
 
             // Act.
-            var dispatchable = new Dispatchable().WithId(guid);
+            var dispatchable = Dispatchable.OnQueue("abc").WithId(guid);
 
             // Assert.
             Assert.Equal(guid, dispatchable.Id);
@@ -25,7 +25,7 @@ namespace Moogie.Queues.Tests
             var queue = "default-queue";
 
             // Act.
-            var dispatchable = new Dispatchable().OnQueue(queue);
+            var dispatchable = Dispatchable.OnQueue("default-queue");
 
             // Assert.
             Assert.Equal(queue, dispatchable.Queue);
@@ -38,7 +38,7 @@ namespace Moogie.Queues.Tests
             var content = "Hello, worldies.";
 
             // Act.
-            var dispatchable = new Dispatchable().WithContent(content);
+            var dispatchable = Dispatchable.OnQueue("abc").WithContent(content);
 
             // Assert.
             Assert.Equal(content, dispatchable.Content);
@@ -51,7 +51,7 @@ namespace Moogie.Queues.Tests
             var expiry = DateTime.Now.AddYears(1);
 
             // Act.
-            var dispatchable = new Dispatchable().ExpireAt(expiry);
+            var dispatchable = Dispatchable.OnQueue("abc").ExpireAt(expiry);
 
             // Assert.
             Assert.Equal(expiry, dispatchable.Expiry);

@@ -13,4 +13,10 @@
         <PackageReference Include="coverlet.collector" Version="1.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj" />
+      <ProjectReference Include="..\..\src\Moogie.Queues.Providers.AmazonSQS\Moogie.Queues.Providers.AmazonSQS.csproj" />
+      <ProjectReference Include="..\..\src\Moogie.Queues\Moogie.Queues.csproj" />
+    </ItemGroup>
+
 </Project>

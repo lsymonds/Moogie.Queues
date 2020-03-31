@@ -9,18 +9,16 @@ namespace Moogie.Queues.Tests
 
         public List<IProviderReceivable> ReceivedMessages { get; set; } = new List<IProviderReceivable>();
 
-        public async Task<DispatchResponse> Dispatch(IProviderDispatchable dispatchable)
+        public Task<DispatchResponse> Dispatch(IProviderDispatchable dispatchable)
         {
             DispatchedMessages.Add(dispatchable);
-
-            return new DispatchResponse();
+            return Task.FromResult(new DispatchResponse());
         }
 
-        public async Task<ReceiveResponse> Receive(IProviderReceivable receivable)
+        public Task<ReceiveResponse> Receive(IProviderReceivable receivable)
         {
             ReceivedMessages.Add(receivable);
-
-            return new ReceiveResponse();
+            return Task.FromResult(new ReceiveResponse());
         }
     }
 }

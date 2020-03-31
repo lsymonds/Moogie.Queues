@@ -2,7 +2,7 @@ using System;
 
 namespace Moogie.Queues.Validators
 {
-    internal class DispatchableValidator
+    internal static class DispatchableValidator
     {
         public static void Validate(Dispatchable dispatchable)
         {

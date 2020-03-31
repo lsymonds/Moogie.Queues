@@ -5,6 +5,9 @@ namespace Moogie.Queues
     /// </summary>
     public interface IProviderReceivable
     {
-
+        /// <summary>
+        /// Gets or sets the amount of messages to receive.
+        /// </summary>
+        uint MessagesToReceive { get; }
     }
 }

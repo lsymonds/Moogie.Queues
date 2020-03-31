@@ -20,18 +20,6 @@ namespace Moogie.Queues
         }
 
         /// <summary>
-        /// Sets the Queue property of the <see cref="Dispatchable"/> instance.
-        /// </summary>
-        /// <param name="dispatchable">The <see cref="Dispatchable"/> instance to modify.</param>
-        /// <param name="queue">The queue to dispatch the message on.</param>
-        /// <returns>The modified <see cref="Dispatchable"/> instance.</returns>
-        public static Dispatchable OnQueue(this Dispatchable dispatchable, string queue)
-        {
-            dispatchable.Queue = queue;
-            return dispatchable;
-        }
-
-        /// <summary>
         /// Sets the Content property of the <see cref="Dispatchable"/> instance.
         /// </summary>
         /// <param name="dispatchable">The <see cref="Dispatchable"/> instance to modify.</param>
