@@ -5,28 +5,34 @@ namespace Moogie.Queues
     /// </summary>
     public static class ReceivableExtensions
     {
+        /// <summary>
+        /// Extension method for an integer that converts it into a <see cref="Receivable"/> object with the messages
+        /// to receive set.
+        /// </summary>
+        /// <param name="messagesToReceive">The number of messages to receive. Should be 1.</param>
+        /// <returns>The configured <see cref="Receivable"/> instance.</returns>
         public static Receivable Message(this int messagesToReceive) => messagesToReceive.Messages();
 
+        /// <summary>
+        /// Extension method for an integer that converts it into a <see cref="Receivable"/> object with the messages
+        /// to receive set.
+        /// </summary>
+        /// <param name="messagesToReceive">The number of messages to receive. Should be greater than 1.</param>
+        /// <returns>The configured <see cref="Receivable"/> instance.</returns>
         public static Receivable Messages(this int messagesToReceive) => new Receivable
         {
             MessagesToReceive = messagesToReceive
         };
 
+        /// <summary>
+        /// Configures a <see cref="Receivable"/> to receive messages from a certain queue.
+        /// </summary>
+        /// <param name="receivable">The <see cref="Receivable"/> to configure.</param>
+        /// <param name="queue">The queue to receive messages from.</param>
+        /// <returns>The <see cref="Receivable"/> instance with the Queue set.</returns>
         public static Receivable FromQueue(this Receivable receivable, string queue)
         {
             receivable.Queue = queue;
-            return receivable;
-        }
-
-        /// <summary>
-        /// Sets the amount of messages to receive from the Receive request. Defaults to 1.
-        /// </summary>
-        /// <param name="receivable">The <see cref="Receivable"/> instance to modify.</param>
-        /// <param name="amount">The amount of messages to receive.</param>
-        /// <returns>The modified <see cref="Receivable"/> instance.</returns>
-        public static Receivable AmountOfMessagesToReceive(this Receivable receivable, int amount)
-        {
-            receivable.MessagesToReceive = amount;
             return receivable;
         }
     }
