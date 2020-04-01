@@ -3,7 +3,7 @@ using System;
 namespace Moogie.Queues
 {
     /// <summary>
-    /// Exception that is thrown when the Queue property is not set on a <see cref="Dispatchable"/> instance.
+    /// Exception that is thrown when the Queue property is not set on a <see cref="Message"/> instance.
     /// </summary>
     public class MissingQueueException : Exception
     {

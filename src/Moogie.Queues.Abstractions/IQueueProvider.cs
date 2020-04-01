@@ -10,15 +10,15 @@ namespace Moogie.Queues
         /// <summary>
         /// Dispatches a message onto the queue.
         /// </summary>
-        /// <param name="dispatchable">The message to dispatch onto the queue.</param>
+        /// <param name="message">The message to dispatch onto the queue.</param>
         /// <returns>The response from the Dispatch command.</returns>
-        Task<DispatchResponse> Dispatch(IProviderDispatchable dispatchable);
+        Task<DispatchResponse> Dispatch(Message message);
 
         /// <summary>
         /// Receives a message or messages from the queue.
         /// </summary>
         /// <param name="receivable">The object used to configure the receive message on the provider.</param>
         /// <returns>An object containing the received messages.</returns>
-        Task<ReceiveResponse> Receive(IProviderReceivable receivable);
+        Task<ReceiveResponse> Receive(Receivable receivable);
     }
 }

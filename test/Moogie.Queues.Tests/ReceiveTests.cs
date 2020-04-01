@@ -12,9 +12,10 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> ValidationEntities = new[]
         {
             new object[] { null!, typeof(ArgumentNullException) },
+            new object[] { new Receivable(), typeof(MissingQueueException) },
             new object[]
             {
-                Receivable.FromQueue("foo").AmountOfMessagesToReceive(0),
+                new Receivable { Queue = "foo", MessagesToReceive = -3 },
                 typeof(InvalidMessagesToReceiveParameter)
             }
         };
@@ -34,7 +35,7 @@ namespace Moogie.Queues.Tests
         public async Task It_Throws_An_Exception_When_An_Attempt_Is_Made_To_Add_A_Message_To_A_Non_Existent_Queue()
         {
             // Arrange & Act.
-            async Task Act() => await _queueManager.Receive(Receivable.FromQueue("random"));
+            async Task Act() => await _queueManager.Receive(1.Message().FromQueue("random"));
 
             // Assert.
             await Assert.ThrowsAsync<NoRegisteredQueueException>(Act);
@@ -51,7 +52,7 @@ namespace Moogie.Queues.Tests
             _queueManager.AddQueue("two", providerTwo);
 
             // Act.
-            await _queueManager.Receive(Receivable.FromQueue("two").AmountOfMessagesToReceive(10));
+            await _queueManager.Receive(10.Messages().FromQueue("two"));
 
             // Assert.
             Assert.Empty(providerOne.ReceivedMessages);

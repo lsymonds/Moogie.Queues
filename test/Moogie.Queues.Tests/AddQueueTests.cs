@@ -58,12 +58,12 @@ namespace Moogie.Queues.Tests
 
         private class FakeProvider : IQueueProvider
         {
-            public Task<DispatchResponse> Dispatch(IProviderDispatchable dispatchable)
+            public Task<DispatchResponse> Dispatch(Message message)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<ReceiveResponse> Receive(IProviderReceivable receivable)
+            public Task<ReceiveResponse> Receive(Receivable receivable)
             {
                 throw new NotImplementedException();
             }

@@ -17,9 +17,9 @@ namespace Moogie.Queues
         /// <summary>
         /// Dispatches a message onto a queue.
         /// </summary>
-        /// <param name="dispatchable">The message to dispatch.</param>
+        /// <param name="message">The message to dispatch.</param>
         /// <returns>An asynchronous task yielding a <see cref="DispatchResponse"/> object.</returns>
-        Task<DispatchResponse> Dispatch(Dispatchable dispatchable);
+        Task<DispatchResponse> Dispatch(Message message);
 
         /// <summary>
         /// Receives a message or messages from a queue.

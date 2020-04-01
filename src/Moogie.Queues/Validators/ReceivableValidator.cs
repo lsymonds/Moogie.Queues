@@ -12,7 +12,7 @@ namespace Moogie.Queues.Validators
             if (string.IsNullOrWhiteSpace(receivable.Queue))
                 throw new MissingQueueException("Receivable");
 
-            if (receivable.MessagesToReceive == 0)
+            if (receivable.MessagesToReceive <= 0)
                 throw new InvalidMessagesToReceiveParameter();
         }
     }

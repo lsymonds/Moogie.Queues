@@ -3,7 +3,7 @@ using System;
 namespace Moogie.Queues
 {
     /// <summary>
-    /// Exception that is thrown when the Content property on a <see cref="Dispatchable"/> instance is invalid.
+    /// Exception that is thrown when the Content property on a <see cref="Message"/> instance is invalid.
     /// </summary>
     public class MissingContentException : Exception
     {

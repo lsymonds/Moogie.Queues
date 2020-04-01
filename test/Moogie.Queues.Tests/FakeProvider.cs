@@ -5,17 +5,17 @@ namespace Moogie.Queues.Tests
 {
     public abstract class FakeProvider : IQueueProvider
     {
-        public List<IProviderDispatchable> DispatchedMessages { get; set; } = new List<IProviderDispatchable>();
+        public List<Message> DispatchedMessages { get; set; } = new List<Message>();
 
-        public List<IProviderReceivable> ReceivedMessages { get; set; } = new List<IProviderReceivable>();
+        public List<Receivable> ReceivedMessages { get; set; } = new List<Receivable>();
 
-        public Task<DispatchResponse> Dispatch(IProviderDispatchable dispatchable)
+        public Task<DispatchResponse> Dispatch(Message message)
         {
-            DispatchedMessages.Add(dispatchable);
+            DispatchedMessages.Add(message);
             return Task.FromResult(new DispatchResponse());
         }
 
-        public Task<ReceiveResponse> Receive(IProviderReceivable receivable)
+        public Task<ReceiveResponse> Receive(Receivable receivable)
         {
             ReceivedMessages.Add(receivable);
             return Task.FromResult(new ReceiveResponse());

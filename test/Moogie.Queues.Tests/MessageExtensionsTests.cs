@@ -12,10 +12,10 @@ namespace Moogie.Queues.Tests
             var guid = Guid.NewGuid();
 
             // Act.
-            var dispatchable = Dispatchable.OnQueue("abc").WithId(guid);
+            var message = Message.OnQueue("abc").WithId(guid);
 
             // Assert.
-            Assert.Equal(guid, dispatchable.Id);
+            Assert.Equal(guid, message.Id);
         }
 
         [Fact]
@@ -25,10 +25,10 @@ namespace Moogie.Queues.Tests
             var queue = "default-queue";
 
             // Act.
-            var dispatchable = Dispatchable.OnQueue("default-queue");
+            var message = Message.OnQueue("default-queue");
 
             // Assert.
-            Assert.Equal(queue, dispatchable.Queue);
+            Assert.Equal(queue, message.Queue);
         }
 
         [Fact]
@@ -38,10 +38,10 @@ namespace Moogie.Queues.Tests
             var content = "Hello, worldies.";
 
             // Act.
-            var dispatchable = Dispatchable.OnQueue("abc").WithContent(content);
+            var message = Message.OnQueue("abc").WithContent(content);
 
             // Assert.
-            Assert.Equal(content, dispatchable.Content);
+            Assert.Equal(content, message.Content);
         }
 
         [Fact]
@@ -51,10 +51,10 @@ namespace Moogie.Queues.Tests
             var expiry = DateTime.Now.AddYears(1);
 
             // Act.
-            var dispatchable = Dispatchable.OnQueue("abc").ExpireAt(expiry);
+            var message = Message.OnQueue("abc").WhichExpiresAt(expiry);
 
             // Assert.
-            Assert.Equal(expiry, dispatchable.Expiry);
+            Assert.Equal(expiry, message.Expiry);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Moogie.Queues.Tests
             var queue = "receivable-queue";
 
             // Act.
-            var receivable = Receivable.FromQueue(queue);
+            var receivable = 1.Message().FromQueue(queue);
 
             // Assert.
             Assert.Equal(queue, receivable.Queue);
@@ -20,14 +20,11 @@ namespace Moogie.Queues.Tests
         [Fact]
         public void It_Adds_The_Number_Of_Messages_To_Retrieve()
         {
-            // Arrange.
-            var messagesToReceive = 10u;
-
-            // Act.
-            var receivable = Receivable.FromQueue("abc").AmountOfMessagesToReceive(messagesToReceive);
+            // Arrange & Act.
+            var receivable = 10.Messages().FromQueue("abc");
 
             // Assert.
-            Assert.Equal(messagesToReceive, receivable.MessagesToReceive);
+            Assert.Equal(10, receivable.MessagesToReceive);
         }
     }
 }

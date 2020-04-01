@@ -33,16 +33,16 @@ namespace Moogie.Queues
         /// <summary>
         /// Dispatches a message onto a specified queue.
         /// </summary>
-        /// <param name="dispatchable">
+        /// <param name="message">
         /// The message configuration object which contains all of the necessary properties.
         /// </param>
         /// <returns>
         /// An awaitable task yielding the response from the attempt to dispatch the message onto the queue.
         /// </returns>
-        public async Task<DispatchResponse> Dispatch(Dispatchable dispatchable)
+        public async Task<DispatchResponse> Dispatch(Message message)
         {
-            DispatchableValidator.Validate(dispatchable);
-            return await GetProvider(dispatchable.Queue).Dispatch(dispatchable).ConfigureAwait(false);
+            MessageValidator.Validate(message);
+            return await GetProvider(message.Queue).Dispatch(message).ConfigureAwait(false);
         }
 
         /// <summary>
