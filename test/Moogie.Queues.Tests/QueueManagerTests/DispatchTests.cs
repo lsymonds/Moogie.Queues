@@ -6,10 +6,8 @@ using Xunit;
 
 namespace Moogie.Queues.Tests
 {
-    public class DispatchTests
+    public class DispatchTests : BaseQueueManagerTest
     {
-        private readonly IQueueManager _queueManager = new QueueManager();
-
         public static IEnumerable<object[]> ValidationEntities = new[]
         {
             new object[] { null!, typeof(ArgumentNullException) },
@@ -27,7 +25,7 @@ namespace Moogie.Queues.Tests
         public async Task It_Validates_Message_Entity_Correctly(Message message, Type exceptionType)
         {
             // Arrange & Act.
-            async Task Act() => await _queueManager.Dispatch(message);
+            async Task Act() => await QueueManager.Dispatch(message);
 
             // Assert.
             await Assert.ThrowsAsync(exceptionType, Act);
@@ -37,7 +35,7 @@ namespace Moogie.Queues.Tests
         public async Task It_Throws_An_Exception_When_An_Attempt_Is_Made_To_Add_A_Message_To_A_Non_Existent_Queue()
         {
             // Arrange & Act.
-            async Task Act() => await _queueManager.Dispatch(Message.OnQueue("random").WithContent("foo"));
+            async Task Act() => await QueueManager.Dispatch(Message.OnQueue("random").WithContent("foo"));
 
             // Assert.
             await Assert.ThrowsAsync<NoRegisteredQueueException>(Act);
@@ -47,11 +45,8 @@ namespace Moogie.Queues.Tests
         public async Task It_Dispatches_Messages_To_The_Appropriate_Queue()
         {
             // Arrange.
-            var providerOne = new ProviderOne();
-            var providerTwo = new ProviderTwo();
-
-            _queueManager.AddQueue("provider-one", providerOne);
-            _queueManager.AddQueue("provider-two", providerTwo);
+            QueueManager.AddQueue("provider-one", ProviderOne);
+            QueueManager.AddQueue("provider-two", ProviderTwo);
 
             var id = Guid.NewGuid();
             var secondId = Guid.NewGuid();
@@ -59,36 +54,28 @@ namespace Moogie.Queues.Tests
             var expiry = DateTime.Now.AddMonths(1);
 
             // Act.
-            await _queueManager.Dispatch(Message
+            await QueueManager.Dispatch(Message
                 .OnQueue("provider-one")
                 .WithId(id)
                 .WithContent("hello, provider one"));
 
-            await _queueManager.Dispatch(Message
+            await QueueManager.Dispatch(Message
                 .OnQueue("provider-two")
                 .WithId(secondId)
                 .WithContent("hello, provider two")
                 .WhichExpiresAt(expiry));
 
             // Assert.
-            Assert.Single(providerOne.DispatchedMessages);
-            Assert.Single(providerTwo.DispatchedMessages);
+            Assert.Single(ProviderOne.DispatchedMessages);
+            Assert.Single(ProviderTwo.DispatchedMessages);
 
-            Assert.Equal(id, providerOne.DispatchedMessages.First().Id);
-            Assert.Equal(secondId, providerTwo.DispatchedMessages.First().Id);
+            Assert.Equal(id, ProviderOne.DispatchedMessages.First().Id);
+            Assert.Equal(secondId, ProviderTwo.DispatchedMessages.First().Id);
 
-            Assert.Equal("hello, provider one", providerOne.DispatchedMessages.First().Content);
-            Assert.Equal("hello, provider two", providerTwo.DispatchedMessages.First().Content);
+            Assert.Equal("hello, provider one", ProviderOne.DispatchedMessages.First().Content);
+            Assert.Equal("hello, provider two", ProviderTwo.DispatchedMessages.First().Content);
 
-            Assert.Equal(expiry, providerTwo.DispatchedMessages.First().Expiry);
-        }
-
-        public class ProviderOne : FakeProvider
-        {
-        }
-
-        public class ProviderTwo : FakeProvider
-        {
+            Assert.Equal(expiry, ProviderTwo.DispatchedMessages.First().Expiry);
         }
     }
 }

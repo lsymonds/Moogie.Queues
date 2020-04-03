@@ -13,47 +13,31 @@ namespace Moogie.Queues
         private readonly ConcurrentDictionary<string, IQueueProvider> _queueProviders
             = new ConcurrentDictionary<string, IQueueProvider>();
 
-        /// <summary>
-        /// Adds a queue provider to the collection of named queue providers maintained in the current
-        /// <see cref="QueueManager"/> instance.
-        /// </summary>
-        /// <param name="queue">The name of the queue provider.</param>
-        /// <param name="queueProvider">The <see cref="IQueueProvider"/> implementation.</param>
+        /// <inheritdoc />
         public void AddQueue(string queue, IQueueProvider queueProvider)
         {
             if (string.IsNullOrWhiteSpace(queue)) throw new ArgumentNullException(nameof(queue));
-            if (queueProvider == null) throw new ArgumentNullException(nameof(queueProvider));
-
             if (_queueProviders.ContainsKey(queue))
                 throw new DuplicateQueueException(queue);
 
-            _queueProviders[queue] = queueProvider;
+            _queueProviders[queue] = queueProvider ?? throw new ArgumentNullException(nameof(queueProvider));
         }
 
-        /// <summary>
-        /// Dispatches a message onto a specified queue.
-        /// </summary>
-        /// <param name="message">
-        /// The message configuration object which contains all of the necessary properties.
-        /// </param>
-        /// <returns>
-        /// An awaitable task yielding the response from the attempt to dispatch the message onto the queue.
-        /// </returns>
+        /// <inheritdoc />
+        public async Task<DeleteResponse> Delete(Deletable deletable)
+        {
+            DeletableValidator.Validate(deletable);
+            return await GetProvider(deletable.Queue).Delete(deletable).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<DispatchResponse> Dispatch(Message message)
         {
             MessageValidator.Validate(message);
             return await GetProvider(message.Queue).Dispatch(message).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Listens to and receives a message from a specified queue.
-        /// </summary>
-        /// <param name="receivable">
-        /// The configuration object which determines how messages will be read from the specified queue.
-        /// </param>
-        /// <returns>
-        /// An awaitable task yielding the response from the attempt to receive the message(s) from the queue.
-        /// </returns>
+        /// <inheritdoc />
         public async Task<ReceiveResponse> Receive(Receivable receivable)
         {
             ReceivableValidator.Validate(receivable);

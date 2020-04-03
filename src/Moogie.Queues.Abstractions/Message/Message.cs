@@ -7,18 +7,24 @@ namespace Moogie.Queues
     /// </summary>
     public class Message
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the id of the message.
+        /// </summary>
         public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets or sets the queue to dispatch the message on.
         /// </summary>
-        public string Queue { get; set; } = null!;
+        public string Queue { get; set; }
 
-        /// <inheritdoc />
-        public string? Content { get; set; }
+        /// <summary>
+        /// Gets or sets the content of the message.
+        /// </summary>
+        public string Content { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the optional expiry of the message.
+        /// </summary>
         public DateTime? Expiry { get; set; }
 
         /// <summary>

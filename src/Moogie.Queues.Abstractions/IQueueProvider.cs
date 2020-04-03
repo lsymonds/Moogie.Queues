@@ -8,6 +8,13 @@ namespace Moogie.Queues
     public interface IQueueProvider
     {
         /// <summary>
+        /// Delete a message from the queue. Also known as confirming a message in some queue systems.
+        /// </summary>
+        /// <param name="deletable">The representation of a message to delete.</param>
+        /// <returns>The response from the delete or confirm of the message.</returns>
+        Task<DeleteResponse> Delete(Deletable deletable);
+
+        /// <summary>
         /// Dispatches a message onto the queue.
         /// </summary>
         /// <param name="message">The message to dispatch onto the queue.</param>

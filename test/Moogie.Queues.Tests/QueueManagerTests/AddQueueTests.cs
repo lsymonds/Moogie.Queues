@@ -58,6 +58,11 @@ namespace Moogie.Queues.Tests
 
         private class FakeProvider : IQueueProvider
         {
+            public Task<DeleteResponse> Delete(Deletable deletable)
+            {
+                throw new NotImplementedException();
+            }
+
             public Task<DispatchResponse> Dispatch(Message message)
             {
                 throw new NotImplementedException();

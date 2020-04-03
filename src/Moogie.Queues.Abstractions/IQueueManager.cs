@@ -15,6 +15,17 @@ namespace Moogie.Queues
         void AddQueue(string queue, IQueueProvider queueProvider);
 
         /// <summary>
+        /// Deletes a message from a queue. On some queueing systems this is known as confirming or acknowledging
+        /// the queue message.
+        /// </summary>
+        /// <param name="deletable">The message to delete.</param>
+        /// <returns>
+        /// An asynchronous task yielding a <see cref="DeleteResponse"/> object which contains information about the
+        /// delete.
+        /// </returns>
+        Task<DeleteResponse> Delete(Deletable deletable);
+
+        /// <summary>
         /// Dispatches a message onto a queue.
         /// </summary>
         /// <param name="message">The message to dispatch.</param>
