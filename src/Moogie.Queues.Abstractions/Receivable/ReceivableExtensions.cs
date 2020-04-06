@@ -35,5 +35,17 @@ namespace Moogie.Queues
             receivable.Queue = queue;
             return receivable;
         }
+
+        /// <summary>
+        /// Configures the Receive method to long poll and wait for the configured number of seconds.
+        /// </summary>
+        /// <param name="receivable">The <see cref="Receivable"/> to configure.</param>
+        /// <param name="seconds">The seconds to wait for.</param>
+        /// <returns>The <see cref="Receivable"/> instance with the number of seconds to wait set.</returns>
+        public static Receivable ButWaitFor(this Receivable receivable, ushort seconds)
+        {
+            receivable.SecondsToWait = seconds;
+            return receivable;
+        }
     }
 }

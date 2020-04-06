@@ -16,8 +16,8 @@ namespace Moogie.Queues
         public int MessagesToReceive { get; set; } = 1;
 
         /// <summary>
-        /// Gets or sets the number of seconds to wait when long polling. If this property is left as null, then
-        /// long polling is disabled.
+        /// Gets or sets the number of seconds to wait when long polling until the requested number of messages are
+        /// received.. If this property is left as null, then long polling is disabled.
         /// </summary>
         public ushort? SecondsToWait { get; set; }
     }

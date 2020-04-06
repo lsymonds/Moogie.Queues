@@ -1,3 +1,5 @@
+using System;
+
 namespace Moogie.Queues
 {
     /// <summary>
@@ -5,6 +7,9 @@ namespace Moogie.Queues
     /// </summary>
     public class DispatchResponse
     {
-
+        /// <summary>
+        /// Gets or sets the created message id.
+        /// </summary>
+        public Guid MessageId { get; set; }
     }
 }
