@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Moogie.Queues.Internal;
 
 namespace Moogie.Queues.Providers.Memory
 {
@@ -11,13 +12,13 @@ namespace Moogie.Queues.Providers.Memory
     /// </summary>
     public class MemoryProvider : IQueueProvider
     {
-        private readonly ConcurrentDictionary<Guid, MessageRepresentation> _messages =
-            new ConcurrentDictionary<Guid, MessageRepresentation>();
+        private readonly ConcurrentDictionary<string, QueuedMessage> _messages =
+            new ConcurrentDictionary<string, QueuedMessage>();
 
         /// <inheritdoc />
         public Task<DeleteResponse> Delete(Deletable deletable)
         {
-            _messages.TryRemove(deletable.Id, out _);
+            _messages.TryRemove(deletable.ReceiptHandle, out _);
             return Task.FromResult(new DeleteResponse());
         }
 
@@ -26,24 +27,22 @@ namespace Moogie.Queues.Providers.Memory
         {
             var messageId = message.Id ?? Guid.NewGuid();
 
-            _messages.TryAdd(messageId, new MessageRepresentation
+            _messages.TryAdd(messageId.ToString(), new QueuedMessage
             {
                 Id = messageId,
-                Message = message.Content,
-                Expiry = message.Expiry
+                Content = message.Content,
+                Expiry = message.Expiry,
+                Queue = message.Queue
             });
 
-            return Task.FromResult(new DispatchResponse
-            {
-                MessageId = messageId
-            });
+            return Task.FromResult(new DispatchResponse {MessageId = messageId});
         }
 
         /// <summary>
         /// Gets whether or not the memory provider contains the message.
         /// </summary>
         /// <param name="id">The id of the message.</param>
-        public bool HasMessage(Guid id) => _messages.ContainsKey(id);
+        public bool HasMessage(Guid id) => _messages.ContainsKey(id.ToString());
 
         /// <summary>
         /// Gets whether there are any messages in the memory provider.
@@ -56,7 +55,8 @@ namespace Moogie.Queues.Providers.Memory
 
         private async Task<ReceiveResponse> LongPoll(Receivable receivable)
         {
-            var messagesReceived = new List<ReceiveResponse.ReceivedMessage>();
+            var messagesReceived = new List<ReceivedMessage>();
+            // ReSharper disable once PossibleInvalidOperationException
             var timeToWaitUntil = DateTime.Now.AddSeconds(receivable.SecondsToWait.Value);
 
             bool ShouldContinuePolling() => messagesReceived.Count < receivable.MessagesToReceive &&
@@ -69,10 +69,7 @@ namespace Moogie.Queues.Providers.Memory
                     await Task.Delay(250);
             }
 
-            return new ReceiveResponse
-            {
-                Messages = messagesReceived
-            };
+            return new ReceiveResponse {Messages = messagesReceived};
         }
 
         private ReceiveResponse GetMessages(Receivable receivable)
@@ -80,10 +77,12 @@ namespace Moogie.Queues.Providers.Memory
             var messages = _messages
                 .Where(x => x.Value.Expiry == null || x.Value.Expiry > DateTime.Now)
                 .Take(receivable.MessagesToReceive)
-                .Select(x => new ReceiveResponse.ReceivedMessage
+                .Select(x => new ReceivedMessage
                 {
                     Id = x.Value.Id,
-                    Content = x.Value.Message
+                    Content = x.Value.Content,
+                    ReceiptHandle = x.Value.Id.ToString(),
+                    Queue = x.Value.Queue
                 });
 
             return new ReceiveResponse {Messages = messages};

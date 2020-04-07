@@ -9,8 +9,8 @@ namespace Moogie.Queues.Validators
             if (deletable == null)
                 throw new ArgumentNullException(nameof(deletable));
 
-            if (deletable.Id == Guid.Empty)
-                throw new ArgumentException(nameof(deletable.Id));
+            if (string.IsNullOrWhiteSpace(deletable.ReceiptHandle))
+                throw new ArgumentException(nameof(deletable.ReceiptHandle));
 
             if (string.IsNullOrWhiteSpace(deletable.Queue))
                 throw new MissingQueueException("Deletable");

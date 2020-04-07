@@ -13,7 +13,11 @@ namespace Moogie.Queues.Tests.Providers.Memory
             var id = Guid.NewGuid();
 
             // Act.
-            await QueueManager.Delete(Deletable.FromId(id).OnQueue("default"));
+            await QueueManager.Delete(new Deletable
+            {
+                Queue = "default",
+                ReceiptHandle = "missing"
+            });
 
             // Assert.
             Assert.False(QueueProvider.HasMessage(id));
@@ -29,7 +33,8 @@ namespace Moogie.Queues.Tests.Providers.Memory
             await QueueManager.Dispatch(message);
 
             // Act.
-            await QueueManager.Delete(message.AsDeletable());
+            var deletable = Deletable.WithReceiptHandle(id.ToString()).OnQueue("default");
+            await QueueManager.Delete(deletable);
 
             // Assert.
             Assert.False(QueueProvider.HasMessage(id));

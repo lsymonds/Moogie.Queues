@@ -8,6 +8,17 @@ namespace Moogie.Queues
     public static class DeletableExtensions
     {
         /// <summary>
+        /// Converts a ReceivedMessage object into a <see cref="Deletable"/> object.
+        /// </summary>
+        /// <param name="receivedMessage">The response to convert.</param>
+        /// <returns>The converted <see cref="Deletable"/> object.</returns>
+        public static Deletable AsDeletable(this ReceivedMessage receivedMessage) => new Deletable
+        {
+            ReceiptHandle = receivedMessage.ReceiptHandle,
+            Queue = receivedMessage.Queue
+        };
+
+        /// <summary>
         /// Sets the Queue parameter of the <see cref="Deletable"/> instance.
         /// </summary>
         /// <param name="deletable">The <see cref="Deletable"/> instance to modify.</param>
@@ -18,24 +29,5 @@ namespace Moogie.Queues
             deletable.Queue = queue;
             return deletable;
         }
-
-        /// <summary>
-        /// Converts a message into a <see cref="Deletable"/> object.
-        /// </summary>
-        /// <param name="message">The message to convert.</param>
-        /// <returns>The converted <see cref="Deletable"/> instance.</returns>
-        public static Deletable AsDeletable(this Message message) => new Deletable
-        {
-            Id = message?.Id ?? Guid.Empty,
-            Queue = message?.Queue ?? null
-        };
-
-        /// <summary>
-        /// Converts a ReceiveResponse object into a <see cref="Deletable"/> object.
-        /// </summary>
-        /// <param name="receiveResponse">The response to convert.</param>
-        /// <returns>The converted <see cref="Deletable"/> object.</returns>
-        public static Deletable AsDeletable(this ReceiveResponse receiveResponse) => new Deletable
-        { };
     }
 }

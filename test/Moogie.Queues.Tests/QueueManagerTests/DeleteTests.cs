@@ -11,7 +11,7 @@ namespace Moogie.Queues.Tests
         {
             new object[] {null, typeof(ArgumentNullException)},
             new object[] {new Deletable(), typeof(ArgumentException)},
-            new object[] { new Deletable { Id = Guid.NewGuid() }, typeof(MissingQueueException)}
+            new object[] {new Deletable { ReceiptHandle = Guid.NewGuid().ToString()}, typeof(MissingQueueException)}
         };
 
         [Theory]
@@ -29,7 +29,11 @@ namespace Moogie.Queues.Tests
         public async Task It_Throws_An_Exception_If_Queue_Is_Not_Present()
         {
             // Arrange & Act.
-            async Task Act() => await QueueManager.Delete(Deletable.FromId(Guid.NewGuid()).OnQueue("wubwub"));
+            async Task Act() => await QueueManager.Delete(new Deletable
+            {
+                ReceiptHandle = "foo-bar",
+                Queue = "wubwub"
+            });
 
             // Assert.
             await Assert.ThrowsAsync<NoRegisteredQueueException>(Act);
@@ -44,7 +48,11 @@ namespace Moogie.Queues.Tests
             QueueManager.AddQueue("one", ProviderOne);
             QueueManager.AddQueue("two", ProviderTwo);
 
-            var deletable = Deletable.FromId(id).OnQueue("two");
+            var deletable = new Deletable
+            {
+                ReceiptHandle = "wubwub",
+                Queue = "two"
+            };
 
             // Act.
             await QueueManager.Delete(deletable);
