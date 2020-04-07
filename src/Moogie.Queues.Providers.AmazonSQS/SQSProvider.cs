@@ -1,6 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Amazon.Runtime;
 using Amazon.SQS;
+using Amazon.SQS.Model;
+using Moogie.Queues.Internal;
 
 namespace Moogie.Queues.Providers.AmazonSQS
 {
@@ -35,7 +38,21 @@ namespace Moogie.Queues.Providers.AmazonSQS
         /// <inheritdoc />
         public async Task<DispatchResponse> Dispatch(Message message)
         {
-            throw new System.NotImplementedException();
+            var messageToQueue = new QueuedMessage
+            {
+                Id = message.Id ?? Guid.NewGuid(),
+                Queue = message.Queue,
+                Content = message.Content,
+                Expiry = message.Expiry
+            };
+
+            await _client.SendMessageAsync(new SendMessageRequest
+            {
+                QueueUrl = _options.QueueUrl,
+                MessageBody = await messageToQueue.Serialise()
+            });
+
+            return new DispatchResponse {MessageId = messageToQueue.Id};
         }
 
         /// <inheritdoc />

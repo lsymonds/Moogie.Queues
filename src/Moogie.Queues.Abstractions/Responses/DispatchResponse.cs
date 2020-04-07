@@ -11,10 +11,5 @@ namespace Moogie.Queues
         /// Gets or sets the created client managed message id.
         /// </summary>
         public Guid MessageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the provider managed id of the message.
-        /// </summary>
-        public string ReceiptHandle { get; set; }
     }
 }
