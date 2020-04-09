@@ -18,11 +18,11 @@ namespace Moogie.Queues.Internal
         {
             using (var stream = new MemoryStream())
             {
-                await JsonSerializer.SerializeAsync(stream, obj);
+                await JsonSerializer.SerializeAsync(stream, obj).ConfigureAwait(false);
                 stream.Seek(0, SeekOrigin.Begin);
 
                 using (var streamReader = new StreamReader(stream))
-                    return await streamReader.ReadToEndAsync();
+                    return await streamReader.ReadToEndAsync().ConfigureAwait(false);
             }
         }
     }

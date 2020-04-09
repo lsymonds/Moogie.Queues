@@ -49,8 +49,8 @@ namespace Moogie.Queues.Providers.AmazonSQS
             await _client.SendMessageAsync(new SendMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
-                MessageBody = await messageToQueue.Serialise()
-            });
+                MessageBody = await messageToQueue.Serialise().ConfigureAwait(false)
+            }).ConfigureAwait(false);
 
             return new DispatchResponse {MessageId = messageToQueue.Id};
         }
@@ -58,7 +58,18 @@ namespace Moogie.Queues.Providers.AmazonSQS
         /// <inheritdoc />
         public async Task<ReceiveResponse> Receive(Receivable receivable)
         {
-            throw new System.NotImplementedException();
+            var messages = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
+            {
+                QueueUrl = _options.QueueUrl,
+                WaitTimeSeconds = receivable.SecondsToWait ?? 0,
+                MaxNumberOfMessages = receivable.MessagesToReceive
+            });
+
+            // Throw exception if not successful.
+            // Loop through, deleting any messages that have expired.
+            // Return the response.
+
+            throw new ArgumentNullException();
         }
     }
 }
