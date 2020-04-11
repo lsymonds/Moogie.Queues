@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Runtime;
 using Amazon.SQS;
@@ -23,16 +25,16 @@ namespace Moogie.Queues.Providers.AmazonSQS
         {
             _options = options;
 
-            var credentials  = options.Credentials ?? FallbackCredentialsFactory.GetCredentials();
+            var credentials = options.Credentials ?? FallbackCredentialsFactory.GetCredentials();
             var config = options.ClientConfig ?? new AmazonSQSConfig();
 
             _client = new AmazonSQSClient(credentials, config);
         }
 
         /// <inheritdoc />
-        public Task<DeleteResponse> Delete(Deletable deletable)
+        public async Task<DeleteResponse> Delete(Deletable deletable)
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         /// <inheritdoc />
@@ -52,7 +54,7 @@ namespace Moogie.Queues.Providers.AmazonSQS
                 MessageBody = await messageToQueue.Serialise().ConfigureAwait(false)
             }).ConfigureAwait(false);
 
-            return new DispatchResponse {MessageId = messageToQueue.Id};
+            return new DispatchResponse { MessageId = messageToQueue.Id };
         }
 
         /// <inheritdoc />
@@ -65,11 +67,32 @@ namespace Moogie.Queues.Providers.AmazonSQS
                 MaxNumberOfMessages = receivable.MessagesToReceive
             });
 
-            // Throw exception if not successful.
-            // Loop through, deleting any messages that have expired.
-            // Return the response.
+            var messagesToReturn = new List<ReceivedMessage>();
+            foreach (var message in messages.Messages)
+            {
+                var deserialised = await message.Body.TryDeserialise<QueuedMessage>();
+                if (deserialised == null)
+                    continue;
 
-            throw new ArgumentNullException();
+                if (deserialised.Expiry != null && deserialised.Expiry < DateTime.Now)
+                {
+                    await Delete(Deletable.WithReceiptHandle(message.ReceiptHandle).OnQueue(receivable.Queue));
+                    continue;
+                }
+
+                messagesToReturn.Add(new ReceivedMessage
+                {
+                    Id = deserialised.Id,
+                    Queue = deserialised.Queue,
+                    Content = deserialised.Content,
+                    ReceiptHandle = message.ReceiptHandle
+                });
+            }
+
+            return new ReceiveResponse
+            {
+                Messages = messagesToReturn
+            };
         }
     }
 }

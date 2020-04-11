@@ -10,19 +10,26 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
     {
         protected AmazonSQSClient SqsClient { get; }
         protected IQueueManager QueueManager { get; }
+        protected string QueueUrl { get; }
 
         protected BaseSQSProviderTests()
         {
-            SqsClient = new AmazonSQSClient();
-
             var queueUrl = Environment.GetEnvironmentVariable("SQS_QUEUE_URL");
 
             var sqsOptions = new SQSOptions
             {
                 Credentials = new BasicAWSCredentials("abc", "def"),
-                QueueUrl = queueUrl,
-                ClientConfig = new AmazonSQSConfig()
+                QueueUrl = "http://localhost:4566/queue/stuff",
+                ClientConfig = new AmazonSQSConfig
+                {
+                    ServiceURL = "http://localhost:4566"
+                }
             };
+
+            SqsClient = new AmazonSQSClient(new BasicAWSCredentials("abc", "def"), sqsOptions.ClientConfig);
+            var result = SqsClient.CreateQueueAsync(Guid.NewGuid().ToString()).GetAwaiter().GetResult();
+            sqsOptions.QueueUrl = result.QueueUrl;
+            QueueUrl = result.QueueUrl;
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddMoogieQueues(new QueueRegistration

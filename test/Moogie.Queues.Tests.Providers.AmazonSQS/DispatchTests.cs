@@ -25,7 +25,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
 
             var receivedMessage = await SqsClient.ReceiveMessageAsync(new ReceiveMessageRequest
             {
-                QueueUrl = "",
+                QueueUrl = QueueUrl,
                 WaitTimeSeconds = 1,
                 MaxNumberOfMessages = 1
             });
