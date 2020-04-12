@@ -1,32 +1,10 @@
-using System;
-
 namespace Moogie.Queues
 {
     /// <summary>
     /// A representation of a message that can be dispatched on a queue.
     /// </summary>
-    public class Message
+    public class Message : QueueableMessage
     {
-        /// <summary>
-        /// Gets or sets the id of the message.
-        /// </summary>
-        public Guid? Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the queue to dispatch the message on.
-        /// </summary>
-        public string Queue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the content of the message.
-        /// </summary>
-        public string Content { get; set; }
-
-        /// <summary>
-        /// Gets or sets the optional expiry of the message.
-        /// </summary>
-        public DateTime? Expiry { get; set; }
-
         /// <summary>
         /// Fluent entry point to the message class which yields a <see cref="Message"/> instance with the queue
         /// name configured.

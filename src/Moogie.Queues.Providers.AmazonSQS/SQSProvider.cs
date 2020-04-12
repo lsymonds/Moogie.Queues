@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Amazon.Runtime;
 using Amazon.SQS;
@@ -12,7 +10,7 @@ namespace Moogie.Queues.Providers.AmazonSQS
     /// <summary>
     /// Moogie.Queues provider for Amazon's Simple Queue Service.
     /// </summary>
-    public class SQSProvider : IQueueProvider
+    public class SQSProvider : BaseProvider
     {
         private readonly SQSOptions _options;
         private readonly AmazonSQSClient _client;
@@ -32,33 +30,25 @@ namespace Moogie.Queues.Providers.AmazonSQS
         }
 
         /// <inheritdoc />
-        public async Task<DeleteResponse> Delete(Deletable deletable)
+        public override async Task<DeleteResponse> Delete(Deletable deletable)
         {
             return null;
         }
 
         /// <inheritdoc />
-        public async Task<DispatchResponse> Dispatch(Message message)
+        public override async Task<DispatchResponse> Dispatch(Message message)
         {
-            var messageToQueue = new QueuedMessage
-            {
-                Id = message.Id ?? Guid.NewGuid(),
-                Queue = message.Queue,
-                Content = message.Content,
-                Expiry = message.Expiry
-            };
-
             await _client.SendMessageAsync(new SendMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
-                MessageBody = await messageToQueue.Serialise().ConfigureAwait(false)
+                MessageBody = await ((QueueableMessage)message).Serialise().ConfigureAwait(false)
             }).ConfigureAwait(false);
 
-            return new DispatchResponse { MessageId = messageToQueue.Id };
+            return new DispatchResponse { MessageId = message.Id };
         }
 
         /// <inheritdoc />
-        public async Task<ReceiveResponse> Receive(Receivable receivable)
+        public override async Task<ReceiveResponse> Receive(Receivable receivable)
         {
             var messages = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
             {
@@ -70,23 +60,9 @@ namespace Moogie.Queues.Providers.AmazonSQS
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
             {
-                var deserialised = await message.Body.TryDeserialise<QueuedMessage>();
-                if (deserialised == null)
-                    continue;
-
-                if (deserialised.Expiry != null && deserialised.Expiry < DateTime.Now)
-                {
-                    await Delete(Deletable.WithReceiptHandle(message.ReceiptHandle).OnQueue(receivable.Queue));
-                    continue;
-                }
-
-                messagesToReturn.Add(new ReceivedMessage
-                {
-                    Id = deserialised.Id,
-                    Queue = deserialised.Queue,
-                    Content = deserialised.Content,
-                    ReceiptHandle = message.ReceiptHandle
-                });
+                var deserialised = await DeserialiseAndHandle(message.Body, message.ReceiptHandle, receivable.Queue);
+                if (deserialised != null)
+                    messagesToReturn.Add(deserialised);
             }
 
             return new ReceiveResponse

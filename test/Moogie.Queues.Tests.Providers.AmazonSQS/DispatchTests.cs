@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Amazon.SQS.Model;
-using Moogie.Queues.Internal;
 using Xunit;
 
 namespace Moogie.Queues.Tests.Providers.AmazonSQS
@@ -19,7 +18,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
 
             // Act.
             var response = await QueueManager.Dispatch(message);
-
+ 
             // Assert.
             Assert.NotEqual(Guid.Empty, response.MessageId);
 
@@ -31,7 +30,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
             });
             Assert.NotEmpty(receivedMessage.Messages);
 
-            var deserialisedMessage = JsonSerializer.Deserialize<QueuedMessage>(receivedMessage.Messages.First().Body);
+            var deserialisedMessage = JsonSerializer.Deserialize<ReceivedMessage>(receivedMessage.Messages.First().Body);
             Assert.Equal(response.MessageId, deserialisedMessage.Id);
             Assert.Equal("default", deserialisedMessage.Queue);
             Assert.Equal("abc", deserialisedMessage.Content);

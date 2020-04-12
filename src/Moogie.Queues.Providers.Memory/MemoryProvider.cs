@@ -10,32 +10,23 @@ namespace Moogie.Queues.Providers.Memory
     /// <summary>
     /// In memory queue provider for testing purposes.
     /// </summary>
-    public class MemoryProvider : IQueueProvider
+    public class MemoryProvider : BaseProvider
     {
-        private readonly ConcurrentDictionary<string, QueuedMessage> _messages =
-            new ConcurrentDictionary<string, QueuedMessage>();
+        private readonly ConcurrentDictionary<string, QueueableMessage> _messages =
+            new ConcurrentDictionary<string, QueueableMessage>();
 
         /// <inheritdoc />
-        public Task<DeleteResponse> Delete(Deletable deletable)
+        public override Task<DeleteResponse> Delete(Deletable deletable)
         {
             _messages.TryRemove(deletable.ReceiptHandle, out _);
             return Task.FromResult(new DeleteResponse());
         }
 
         /// <inheritdoc />
-        public Task<DispatchResponse> Dispatch(Message message)
+        public override Task<DispatchResponse> Dispatch(Message message)
         {
-            var messageId = message.Id ?? Guid.NewGuid();
-
-            _messages.TryAdd(messageId.ToString(), new QueuedMessage
-            {
-                Id = messageId,
-                Content = message.Content,
-                Expiry = message.Expiry,
-                Queue = message.Queue
-            });
-
-            return Task.FromResult(new DispatchResponse {MessageId = messageId});
+            _messages.TryAdd(message.Id.ToString(), message);
+            return Task.FromResult(new DispatchResponse {MessageId = message.Id});
         }
 
         /// <summary>
@@ -50,7 +41,7 @@ namespace Moogie.Queues.Providers.Memory
         public bool HasMessages => _messages.Any();
 
         /// <inheritdoc />
-        public async Task<ReceiveResponse> Receive(Receivable receivable)
+        public override async Task<ReceiveResponse> Receive(Receivable receivable)
             => receivable.SecondsToWait != null ? await LongPoll(receivable) : GetMessages(receivable);
 
         private async Task<ReceiveResponse> LongPoll(Receivable receivable)

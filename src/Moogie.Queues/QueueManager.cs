@@ -34,6 +34,8 @@ namespace Moogie.Queues
         public async Task<DispatchResponse> Dispatch(Message message)
         {
             MessageValidator.Validate(message);
+            message.Id = message.Id == Guid.Empty ? Guid.NewGuid() : message.Id;
+
             return await GetProvider(message.Queue).Dispatch(message).ConfigureAwait(false);
         }
 
