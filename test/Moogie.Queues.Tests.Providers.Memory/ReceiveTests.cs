@@ -37,7 +37,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
                 .WithContent("abc")
                 .WhichExpiresAt(DateTime.Now.AddSeconds(1)));
 
-            await Task.Delay(1000);
+            await Task.Delay(1500);
 
             // Act.
             var messages = await QueueManager.Receive(1.Message().FromQueue("default"));

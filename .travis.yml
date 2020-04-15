@@ -1,0 +1,14 @@
+language: csharp
+mono: none
+dotnet: 3.1.2
+
+services:
+- docker
+
+before_script:
+- docker pull localstack/localstack
+- docker run -d -e SERVICES=sqs -p 4566:4566 --name localstack localstack/localstack
+
+script:
+- dotnet build Moogie.Queues.sln
+- dotnet test
