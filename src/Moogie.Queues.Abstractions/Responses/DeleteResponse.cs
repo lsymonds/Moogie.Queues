@@ -5,5 +5,9 @@ namespace Moogie.Queues
     /// </summary>
     public class DeleteResponse
     {
+        /// <summary>
+        /// Gets or sets whether the deletion of the message succeeded.
+        /// </summary>
+        public bool Success { get; set; }
     }
 }

@@ -32,7 +32,13 @@ namespace Moogie.Queues.Providers.AmazonSQS
         /// <inheritdoc />
         public override async Task<DeleteResponse> Delete(Deletable deletable)
         {
-            return null;
+            var response = await _client.DeleteMessageAsync(new DeleteMessageRequest
+            {
+                QueueUrl = _options.QueueUrl,
+                ReceiptHandle = deletable.ReceiptHandle
+            });
+
+            return new DeleteResponse { Success = response != null && (int)response.HttpStatusCode == 200 };
         }
 
         /// <inheritdoc />
