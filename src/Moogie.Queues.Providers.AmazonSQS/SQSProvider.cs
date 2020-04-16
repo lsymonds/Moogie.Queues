@@ -35,7 +35,7 @@ namespace Moogie.Queues
             var response = await _client.DeleteMessageAsync(new DeleteMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
-                ReceiptHandle = deletable.ReceiptHandle
+                ReceiptHandle = deletable.DeletionAttributes["ReceiptHandle"]
             }).ConfigureAwait(false);
 
             return new DeleteResponse { Success = response != null && (int)response.HttpStatusCode == 200 };
@@ -66,7 +66,16 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
             {
-                var deserialised = await DeserialiseAndHandle(message.Body, message.ReceiptHandle, receivable.Queue).ConfigureAwait(false);
+                var deletable = new Deletable
+                {
+                    Queue = receivable.Queue,
+                    DeletionAttributes = new Dictionary<string, string>
+                    {
+                        { "ReceiptHandle", message.ReceiptHandle }
+                    }
+                };
+
+                var deserialised = await DeserialiseAndHandle(message.Body, deletable).ConfigureAwait(false);
                 if (deserialised != null)
                     messagesToReturn.Add(deserialised);
             }

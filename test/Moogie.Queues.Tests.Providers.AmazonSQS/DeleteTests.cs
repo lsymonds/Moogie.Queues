@@ -14,7 +14,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
             var receivedMessage = await QueueManager.Receive(1.Message().FromQueue("default"));
 
             // Act.
-            var response = await QueueManager.Delete(receivedMessage.Messages.First().AsDeletable());
+            var response = await QueueManager.Delete(receivedMessage.Messages.First().Deletable);
 
             // Assert.
             Assert.True(response.Success);

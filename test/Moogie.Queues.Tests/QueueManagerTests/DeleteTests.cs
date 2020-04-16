@@ -10,8 +10,9 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> DeleteParameters = new[]
         {
             new object[] {null, typeof(ArgumentNullException)},
-            new object[] {new Deletable(), typeof(ArgumentException)},
-            new object[] {new Deletable { ReceiptHandle = Guid.NewGuid().ToString()}, typeof(MissingQueueException)}
+            new object[] {new Deletable(), typeof(ArgumentNullException)},
+            new object[] {new Deletable { DeletionAttributes = new Dictionary<string, string>() }, typeof(ArgumentNullException)},
+            new object[] {new Deletable { DeletionAttributes = new Dictionary<string, string> { { "MessageId", "Wub" } } }, typeof(MissingQueueException)}
         };
 
         [Theory]
@@ -26,20 +27,6 @@ namespace Moogie.Queues.Tests
         }
 
         [Fact]
-        public async Task It_Throws_An_Exception_If_Queue_Is_Not_Present()
-        {
-            // Arrange & Act.
-            async Task Act() => await QueueManager.Delete(new Deletable
-            {
-                ReceiptHandle = "foo-bar",
-                Queue = "wubwub"
-            });
-
-            // Assert.
-            await Assert.ThrowsAsync<NoRegisteredQueueException>(Act);
-        }
-
-        [Fact]
         public async Task It_Attempts_To_Delete_The_Message_From_The_Queue()
         {
             // Arrange.
@@ -50,8 +37,8 @@ namespace Moogie.Queues.Tests
 
             var deletable = new Deletable
             {
-                ReceiptHandle = "wubwub",
-                Queue = "two"
+                Queue = "two",
+                DeletionAttributes = new Dictionary<string, string> { { "MessageId", "Wub" } }
             };
 
             // Act.

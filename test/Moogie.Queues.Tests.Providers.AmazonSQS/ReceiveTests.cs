@@ -22,7 +22,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
             Assert.Equal("abc", response.Messages.First().Content);
             Assert.Equal(id, response.Messages.First().Id);
             Assert.Equal("default", response.Messages.First().Queue);
-            Assert.NotNull(response.Messages.First().ReceiptHandle);
+            Assert.NotNull(response.Messages.First().Deletable);
         }
 
         [Fact]

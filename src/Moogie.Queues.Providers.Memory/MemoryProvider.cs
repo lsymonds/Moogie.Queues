@@ -18,7 +18,7 @@ namespace Moogie.Queues
         /// <inheritdoc />
         public override Task<DeleteResponse> Delete(Deletable deletable)
         {
-            _messages.TryRemove(deletable.ReceiptHandle, out _);
+            _messages.TryRemove(deletable.DeletionAttributes["MessageId"], out _);
             return Task.FromResult(new DeleteResponse());
         }
 
@@ -72,7 +72,14 @@ namespace Moogie.Queues
                 {
                     Id = x.Value.Id,
                     Content = x.Value.Content,
-                    ReceiptHandle = x.Value.Id.ToString(),
+                    Deletable = new Deletable
+                    {
+                        Queue = receivable.Queue,
+                        DeletionAttributes = new Dictionary<string, string>
+                        {
+                            { "MessageId", x.Value.Id.ToString() }
+                        }
+                    },
                     Queue = x.Value.Queue
                 });
 

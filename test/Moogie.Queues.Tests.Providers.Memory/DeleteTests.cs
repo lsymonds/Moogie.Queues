@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,7 +18,10 @@ namespace Moogie.Queues.Tests.Providers.Memory
             await QueueManager.Delete(new Deletable
             {
                 Queue = "default",
-                ReceiptHandle = "missing"
+                DeletionAttributes = new Dictionary<string, string>
+                {
+                    { "MessageId", id.ToString() }
+                }
             });
 
             // Assert.
@@ -28,13 +33,13 @@ namespace Moogie.Queues.Tests.Providers.Memory
         {
             // Arrange.
             var id = Guid.NewGuid();
-            var message = Message.OnQueue("default").WithContent("abc").WithId(id);
 
+            var message = Message.OnQueue("default").WithContent("abc").WithId(id);
             await QueueManager.Dispatch(message);
 
             // Act.
-            var deletable = Deletable.WithReceiptHandle(id.ToString()).OnQueue("default");
-            await QueueManager.Delete(deletable);
+            var receivedMessages = await QueueManager.Receive(1.Message().FromQueue("default"));
+            await QueueManager.Delete(receivedMessages.Messages.First().Deletable);
 
             // Assert.
             Assert.False(QueueProvider.HasMessage(id));

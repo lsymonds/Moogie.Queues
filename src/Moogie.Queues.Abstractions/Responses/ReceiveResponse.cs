@@ -19,9 +19,8 @@ namespace Moogie.Queues
     public class ReceivedMessage : QueueableMessage
     {
         /// <summary>
-        /// Gets or sets the receipt handle of the message. This is the provider defined identifier of the message
-        /// compared to the message id which is the consumer defined identifier.
+        /// Gets or sets the object used to delete this message from the queue.
         /// </summary>
-        public string ReceiptHandle { get; set; }
+        public Deletable Deletable { get; set; }
     }
 }

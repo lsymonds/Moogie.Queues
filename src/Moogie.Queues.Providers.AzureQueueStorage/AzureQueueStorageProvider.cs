@@ -25,8 +25,13 @@ namespace Moogie.Queues
         }
         
         /// <inheritdoc />
-        public override Task<DeleteResponse> Delete(Deletable deletable)
+        public override async Task<DeleteResponse> Delete(Deletable deletable)
         {
+            var messageId = deletable.DeletionAttributes["MessageId"];
+            var popReceipt = deletable.DeletionAttributes["PopReceipt"];
+
+            var response = await _azureQueueClient.DeleteMessageAsync(messageId, popReceipt).ConfigureAwait(false);
+            return new DeleteResponse { Success = response.Status == 204 };
         }
 
         /// <inheritdoc />
@@ -49,7 +54,17 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Value)
             {
-                var handledMessage = await DeserialiseAndHandle(message.MessageText, message.MessageId, receivable.Queue).ConfigureAwait(false);
+                var deletable = new Deletable
+                {
+                    Queue = receivable.Queue,
+                    DeletionAttributes = new Dictionary<string, string>
+                    {
+                        { "MessageId", message.MessageId },
+                        { "PopReceipt", message.PopReceipt }
+                    }
+                };
+
+                var handledMessage = await DeserialiseAndHandle(message.MessageText, deletable).ConfigureAwait(false);
                 if (handledMessage != null)
                     messagesToReturn.Add(handledMessage);
             }

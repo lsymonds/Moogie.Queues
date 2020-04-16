@@ -14,7 +14,7 @@ namespace Moogie.Queues.Internal
         /// <inheritdoc />
         public abstract Task<ReceiveResponse> Receive(Receivable receivable);
 
-        protected async Task<ReceivedMessage> DeserialiseAndHandle(string content, string receiptHandle, string queueToDeleteOn)
+        protected async Task<ReceivedMessage> DeserialiseAndHandle(string content, Deletable deletable)
         {
             var deserialised = await content.TryDeserialise<ReceivedMessage>().ConfigureAwait(false);
             if (deserialised == null)
@@ -22,11 +22,11 @@ namespace Moogie.Queues.Internal
 
             if (deserialised.Expiry != null && deserialised.Expiry < DateTime.Now)
             {
-                await Delete(Deletable.WithReceiptHandle(receiptHandle).OnQueue(queueToDeleteOn)).ConfigureAwait(false);
+                await Delete(deletable).ConfigureAwait(false);
                 return null;
             }
 
-            deserialised.ReceiptHandle = receiptHandle;
+            deserialised.Deletable = deletable;
             return deserialised;
         }
     }
