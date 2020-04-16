@@ -2,7 +2,6 @@ using System;
 using Amazon.Runtime;
 using Amazon.SQS;
 using Microsoft.Extensions.DependencyInjection;
-using Moogie.Queues.Providers.AmazonSQS;
 
 namespace Moogie.Queues.Tests.Providers.AmazonSQS
 {

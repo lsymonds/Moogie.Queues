@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moogie.Queues.Internal;
 
-namespace Moogie.Queues.Providers.Memory
+namespace Moogie.Queues
 {
     /// <summary>
     /// In memory queue provider for testing purposes.

@@ -5,7 +5,7 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Moogie.Queues.Internal;
 
-namespace Moogie.Queues.Providers.AmazonSQS
+namespace Moogie.Queues
 {
     /// <summary>
     /// Moogie.Queues provider for Amazon's Simple Queue Service.
@@ -36,7 +36,7 @@ namespace Moogie.Queues.Providers.AmazonSQS
             {
                 QueueUrl = _options.QueueUrl,
                 ReceiptHandle = deletable.ReceiptHandle
-            });
+            }).ConfigureAwait(false);
 
             return new DeleteResponse { Success = response != null && (int)response.HttpStatusCode == 200 };
         }
@@ -61,12 +61,12 @@ namespace Moogie.Queues.Providers.AmazonSQS
                 QueueUrl = _options.QueueUrl,
                 WaitTimeSeconds = receivable.SecondsToWait ?? 0,
                 MaxNumberOfMessages = receivable.MessagesToReceive
-            });
+            }).ConfigureAwait(false);
 
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
             {
-                var deserialised = await DeserialiseAndHandle(message.Body, message.ReceiptHandle, receivable.Queue);
+                var deserialised = await DeserialiseAndHandle(message.Body, message.ReceiptHandle, receivable.Queue).ConfigureAwait(false);
                 if (deserialised != null)
                     messagesToReturn.Add(deserialised);
             }

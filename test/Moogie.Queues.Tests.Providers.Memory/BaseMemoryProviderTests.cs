@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Moogie.Queues.Providers.Memory;
 
 namespace Moogie.Queues.Tests.Providers.Memory
 {

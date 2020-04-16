@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Moogie.Queues
 {
     /// <summary>

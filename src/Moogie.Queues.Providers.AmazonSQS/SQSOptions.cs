@@ -1,7 +1,7 @@
 using Amazon.Runtime;
 using Amazon.SQS;
 
-namespace Moogie.Queues.Providers.AmazonSQS
+namespace Moogie.Queues
 {
     /// <summary>
     /// Options to configure the <see cref="SQSProvider"/>.

@@ -16,13 +16,13 @@ namespace Moogie.Queues.Internal
 
         protected async Task<ReceivedMessage> DeserialiseAndHandle(string content, string receiptHandle, string queueToDeleteOn)
         {
-            var deserialised = await content.TryDeserialise<ReceivedMessage>();
+            var deserialised = await content.TryDeserialise<ReceivedMessage>().ConfigureAwait(false);
             if (deserialised == null)
                 return null;
 
             if (deserialised.Expiry != null && deserialised.Expiry < DateTime.Now)
             {
-                await Delete(Deletable.WithReceiptHandle(receiptHandle).OnQueue(queueToDeleteOn));
+                await Delete(Deletable.WithReceiptHandle(receiptHandle).OnQueue(queueToDeleteOn)).ConfigureAwait(false);
                 return null;
             }
 

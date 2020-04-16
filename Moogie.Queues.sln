@@ -11,13 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{64406983-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Tests", "test\Moogie.Queues.Tests\Moogie.Queues.Tests.csproj", "{6152D850-B780-4EFA-9947-7EC074B1E54B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Providers.AzureTableStorage", "src\Moogie.Queues.Providers.AzureTableStorage\Moogie.Queues.Providers.AzureTableStorage.csproj", "{AECCB7EB-C0F7-4592-A4A3-E0A60EE79CDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Providers.AzureQueueStorage", "src\Moogie.Queues.Providers.AzureQueueStorage\Moogie.Queues.Providers.AzureQueueStorage.csproj", "{AECCB7EB-C0F7-4592-A4A3-E0A60EE79CDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Providers.AmazonSQS", "src\Moogie.Queues.Providers.AmazonSQS\Moogie.Queues.Providers.AmazonSQS.csproj", "{076607E0-4F22-44FC-A715-D1656FED72CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Tests.Providers.AmazonSQS", "test\Moogie.Queues.Tests.Providers.AmazonSQS\Moogie.Queues.Tests.Providers.AmazonSQS.csproj", "{FEEF877A-BA7B-4377-9F85-3D43872C45EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Tests.Providers.AzureTableStorage", "test\Moogie.Queues.Tests.Providers.AzureTableStorage\Moogie.Queues.Tests.Providers.AzureTableStorage.csproj", "{95569CF1-B21C-4544-AF14-90FF7BA5527C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Tests.Providers.AzureQueueStorage", "test\Moogie.Queues.Tests.Providers.AzureQueueStorage\Moogie.Queues.Tests.Providers.AzureQueueStorage.csproj", "{95569CF1-B21C-4544-AF14-90FF7BA5527C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moogie.Queues.Abstractions", "src\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj", "{6401119C-671A-4F42-8B1F-DB6C3DE0B77D}"
 EndProject
