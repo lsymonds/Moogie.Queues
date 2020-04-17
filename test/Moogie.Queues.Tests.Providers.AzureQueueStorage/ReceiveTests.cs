@@ -60,5 +60,18 @@ namespace Moogie.Queues.Tests.Providers.AzureQueueStorage
             // Assert.
             await Assert.ThrowsAsync<FeatureNotYetSupportedException>(Act);
         }
+
+        [Fact]
+        public async Task It_Does_Not_Thrown_An_Exception_When_Ignore_Long_Poll_Is_True()
+        {
+            // Arrange.
+            SetDependencies(false);
+
+            // Act.
+            var messages = await QueueManager.Receive(1.Message().FromQueue("default").ButWaitFor(5));
+
+            // Assert.
+            Assert.Empty(messages.Messages);
+        }
     }
 }

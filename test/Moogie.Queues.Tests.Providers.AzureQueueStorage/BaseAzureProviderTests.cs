@@ -6,15 +6,18 @@ namespace Moogie.Queues.Tests.Providers.AzureQueueStorage
 {
     public abstract class BaseAzureProviderTests
     {
-        protected readonly QueueClient QueueClient;
-        protected readonly IQueueManager QueueManager;
+        protected QueueClient QueueClient = null!;
+        protected IQueueManager QueueManager = null!;
 
-        public BaseAzureProviderTests()
+        public BaseAzureProviderTests() => SetDependencies();
+
+        protected void SetDependencies(bool throwOnLongPoll = true)
         {
             var options = new AzureQueueStorageOptions
             {
                 ConnectionString = "UseDevelopmentStorage=true",
-                QueueName = Guid.NewGuid().ToString()
+                QueueName = Guid.NewGuid().ToString(),
+                IgnoreLongPollingException = !throwOnLongPoll
             };
 
             QueueClient = new QueueClient(options.ConnectionString, options.QueueName);

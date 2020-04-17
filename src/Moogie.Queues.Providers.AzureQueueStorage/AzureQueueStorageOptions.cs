@@ -11,6 +11,11 @@ namespace Moogie.Queues
         public string ConnectionString { get; set; }
 
         /// <summary>
+        /// Gets or sets whether to ignore the long polling exception and continue on as normal.
+        /// </summary>
+        public bool IgnoreLongPollingException { get; set; }
+
+        /// <summary>
         /// Gets or sets the queue name to interact with. If you want to interact with multiple Azure Queue Storage 
         /// queues, then you should instantiate multiple named providers and pass them to the UseMoogieQueues extension
         /// method.
