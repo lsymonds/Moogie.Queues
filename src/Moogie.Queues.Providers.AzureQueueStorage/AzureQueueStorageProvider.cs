@@ -11,6 +11,9 @@ namespace Moogie.Queues
     /// </summary>
     public class AzureQueueStorageProvider : BaseProvider
     {
+        private const string MESSAGE_ID = "MessageId";
+        private const string POP_RECEIPT = "PopReceipt";
+
         private readonly AzureQueueStorageOptions _options;
         private readonly QueueClient _azureQueueClient; 
 
@@ -27,8 +30,8 @@ namespace Moogie.Queues
         /// <inheritdoc />
         public override async Task<DeleteResponse> Delete(Deletable deletable)
         {
-            var messageId = deletable.DeletionAttributes["MessageId"];
-            var popReceipt = deletable.DeletionAttributes["PopReceipt"];
+            var messageId = deletable.DeletionAttributes[MESSAGE_ID];
+            var popReceipt = deletable.DeletionAttributes[POP_RECEIPT];
 
             var response = await _azureQueueClient.DeleteMessageAsync(messageId, popReceipt).ConfigureAwait(false);
             return new DeleteResponse { Success = response.Status == 204 };
@@ -54,15 +57,9 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Value)
             {
-                var deletable = new Deletable
-                {
-                    Queue = receivable.Queue,
-                    DeletionAttributes = new Dictionary<string, string>
-                    {
-                        { "MessageId", message.MessageId },
-                        { "PopReceipt", message.PopReceipt }
-                    }
-                };
+                var deletable = Deletable.OffOfQueue(receivable.Queue)
+                    .WithDeletionAttribute(MESSAGE_ID, message.MessageId)
+                    .WithDeletionAttribute(POP_RECEIPT, message.PopReceipt);
 
                 var handledMessage = await DeserialiseAndHandle(message.MessageText, deletable).ConfigureAwait(false);
                 if (handledMessage != null)

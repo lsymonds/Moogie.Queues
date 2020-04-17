@@ -24,6 +24,9 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
+        public Task<DeleteResponse> Delete(ReceivedMessage message) => Delete(message.Deletable);
+
+        /// <inheritdoc />
         public async Task<DeleteResponse> Delete(Deletable deletable)
         {
             DeletableValidator.Validate(deletable);

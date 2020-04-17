@@ -43,7 +43,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
             var messages = await QueueManager.Receive(1.Message().FromQueue("default"));
 
             // Assert.
-            Assert.Equal(0, messages.Messages.Count());
+            Assert.Empty(messages.Messages);
         }
 
         [Fact]

@@ -12,13 +12,15 @@ namespace Moogie.Queues
     /// </summary>
     public class MemoryProvider : BaseProvider
     {
+        private const string MESSAGE_ID = "MessageId";
+
         private readonly ConcurrentDictionary<string, QueueableMessage> _messages =
             new ConcurrentDictionary<string, QueueableMessage>();
 
         /// <inheritdoc />
         public override Task<DeleteResponse> Delete(Deletable deletable)
         {
-            _messages.TryRemove(deletable.DeletionAttributes["MessageId"], out _);
+            _messages.TryRemove(deletable.DeletionAttributes[MESSAGE_ID], out _);
             return Task.FromResult(new DeleteResponse());
         }
 
@@ -72,14 +74,7 @@ namespace Moogie.Queues
                 {
                     Id = x.Value.Id,
                     Content = x.Value.Content,
-                    Deletable = new Deletable
-                    {
-                        Queue = receivable.Queue,
-                        DeletionAttributes = new Dictionary<string, string>
-                        {
-                            { "MessageId", x.Value.Id.ToString() }
-                        }
-                    },
+                    Deletable = Deletable.OffOfQueue(receivable.Queue).WithDeletionAttribute(MESSAGE_ID, x.Value.Id.ToString()),
                     Queue = x.Value.Queue
                 });
 

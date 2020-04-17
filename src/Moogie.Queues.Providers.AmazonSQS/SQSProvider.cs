@@ -12,6 +12,8 @@ namespace Moogie.Queues
     /// </summary>
     public class SQSProvider : BaseProvider
     {
+        private const string RECEIPT_HANDLE = "ReceiptHandle";
+
         private readonly SQSOptions _options;
         private readonly AmazonSQSClient _client;
 
@@ -35,7 +37,7 @@ namespace Moogie.Queues
             var response = await _client.DeleteMessageAsync(new DeleteMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
-                ReceiptHandle = deletable.DeletionAttributes["ReceiptHandle"]
+                ReceiptHandle = deletable.DeletionAttributes[RECEIPT_HANDLE]
             }).ConfigureAwait(false);
 
             return new DeleteResponse { Success = response != null && (int)response.HttpStatusCode == 200 };
@@ -66,14 +68,8 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
             {
-                var deletable = new Deletable
-                {
-                    Queue = receivable.Queue,
-                    DeletionAttributes = new Dictionary<string, string>
-                    {
-                        { "ReceiptHandle", message.ReceiptHandle }
-                    }
-                };
+                var deletable = Deletable.OffOfQueue("default")
+                    .WithDeletionAttribute(RECEIPT_HANDLE, message.ReceiptHandle);
 
                 var deserialised = await DeserialiseAndHandle(message.Body, deletable).ConfigureAwait(false);
                 if (deserialised != null)
