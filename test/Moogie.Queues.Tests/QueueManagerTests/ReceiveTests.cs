@@ -14,7 +14,7 @@ namespace Moogie.Queues.Tests
             new object[]
             {
                 new Receivable { Queue = "foo", MessagesToReceive = -3 },
-                typeof(InvalidMessagesToReceiveParameter)
+                typeof(InvalidMessagesToReceiveParameterException)
             }
         };
 

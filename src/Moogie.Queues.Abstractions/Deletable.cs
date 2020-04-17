@@ -10,7 +10,7 @@ namespace Moogie.Queues
         /// <summary>
         /// Gets or sets the attributes used when deleting a message from a queue provider.
         /// </summary>
-        public Dictionary<string, string> DeletionAttributes { get; set; } = new Dictionary<string, string>();
+        internal Dictionary<string, string> DeletionAttributes { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// The queue to delete the message from.

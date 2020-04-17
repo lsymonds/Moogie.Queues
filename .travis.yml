@@ -7,7 +7,9 @@ services:
 
 before_script:
 - docker pull localstack/localstack
-- docker run -d -e SERVICES=sqs -p 4566:4566 --name localstack localstack/localstack
+- docker pull mcr.microsoft.com/azure-storage/azurite
+- docker run -d -e SERVICES=sqs -p 4566:4566 localstack/localstack
+- docker run -d -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite
 
 script:
 - dotnet build Moogie.Queues.sln
