@@ -6,14 +6,14 @@ namespace Moogie.Queues
     public class Message : QueueableMessage
     {
         /// <summary>
-        /// Fluent entry point to the message class which yields a <see cref="Message"/> instance with the queue
-        /// name configured.
+        /// Fluent entry point to the message class which yields a <see cref="Message"/> instance with the content
+        /// configured.
         /// </summary>
-        /// <param name="queue">The queue to dispatch on.</param>
+        /// <param name="content">The content to send.</param>
         /// <returns>The configured <see cref="Message"/> instance.</returns>
-        public static Message OnQueue(string queue) => new Message
+        public static Message WithContent(string content) => new Message
         {
-            Queue = queue
+            Content = content
         };
     }
 }

@@ -40,6 +40,9 @@ Moogie.Queues gives you the ability to register multiple queue providers under o
 You can do this by calling the `AddQueue` method on your `QueueManager` instance or by passing a number of `QueueRegistration`
 instances into the `AddMoogieEvents` method.
 
+By specifying a queue with the name of "default" you do not then need to specify the queue name when attempting to send
+`Message` or `Receivable` instances to that queue provider.
+
 ## Dispatching messages to a queue
 
 Dispatching messages to a queue provider is really easy. Create an instance of the `Dispatchable` class and pass it to 
@@ -49,11 +52,14 @@ You have a choice of instantiating the `Dispatchable` instance yourself or using
 
 ```csharp
 // fluent
-var dispatchable = Dispatchable.OnQueue("default").WithId(Guid.NewGuid()).WithContent("abc").WhichExpiresIn(DateTime.Now.AddSeconds(5));
+var dispatchable = Dispatchable.WithContent("abc")
+    .OnQueue("a-queue")
+    .WithId(Guid.NewGuid())
+    .WhichExpiresIn(DateTime.Now.AddSeconds(5));
 // or standard
 dispatchable = new Dispatchable
 {
-    Queue = "default",
+    Queue = "a-queue",
     Id = Guid.NewGuid(),
     Content = "abc",
     Expiry = DateTime.Now.AddSeconds(5)
@@ -76,11 +82,11 @@ the `SecondsToWait` property if you are instantiating the class yourself or use 
 using the fluent builder. 
 
 ```csharp
-var receivable = 1.Message().FromQueue("default");
-receivable = 5.Messages().FromQueue("default").ButWaitFor(30);
+var receivable = 1.Message().FromQueue("stuff");
+receivable = 5.Messages().FromQueue("stuff").ButWaitFor(30);
 receivable = new Receivable
 {
-    Queue = "default",
+    Queue = "stuff",
     MessagesToReceive = 5
 };
 
@@ -102,7 +108,7 @@ will not contain the required parameters for the provider. Instead, you should p
 `Deletable` property from a `ReceivedMessage` instance into the `Delete` method. 
 
 ```csharp
-var receiveResponse = await _queueManager.Receive(1.Message().FromQueue("default"));
+var receiveResponse = await _queueManager.Receive(1.Message());
 foreach (var message in receiveResponse.Messages)
 {
     await _queueManager.Delete(message);

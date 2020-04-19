@@ -12,7 +12,7 @@ namespace Moogie.Queues.Tests
             var guid = Guid.NewGuid();
 
             // Act.
-            var message = Message.OnQueue("abc").WithId(guid);
+            var message = Message.WithContent("abc").WithId(guid);
 
             // Assert.
             Assert.Equal(guid, message.Id);
@@ -25,20 +25,20 @@ namespace Moogie.Queues.Tests
             var queue = "default-queue";
 
             // Act.
-            var message = Message.OnQueue("default-queue");
+            var message = Message.WithContent("abc").OnQueue("default-queue");
 
             // Assert.
             Assert.Equal(queue, message.Queue);
         }
 
         [Fact]
-        public void It_Adds_The_Text_Content()
+        public void It_Sets_The_Text_Content()
         {
             // Arrange.
             var content = "Hello, worldies.";
 
             // Act.
-            var message = Message.OnQueue("abc").WithContent(content);
+            var message = Message.WithContent(content);
 
             // Assert.
             Assert.Equal(content, message.Content);
@@ -51,10 +51,20 @@ namespace Moogie.Queues.Tests
             var expiry = DateTime.Now.AddYears(1);
 
             // Act.
-            var message = Message.OnQueue("abc").WhichExpiresAt(expiry);
+            var message = Message.WithContent("abc").WhichExpiresAt(expiry);
 
             // Assert.
             Assert.Equal(expiry, message.Expiry);
+        }
+
+        [Fact]
+        public void It_Defaults_The_Queue_If_Not_Specified()
+        {
+            // Arrange & Act.
+            var message = Message.WithContent("abc");
+
+            // Assert.
+            Assert.Equal("default", message.Queue);
         }
     }
 }

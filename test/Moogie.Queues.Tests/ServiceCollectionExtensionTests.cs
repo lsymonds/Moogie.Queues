@@ -21,7 +21,7 @@ namespace Moogie.Queues.Tests
             var queueManager = serviceProvider.GetService<IQueueManager>();
 
             // Act.
-            await queueManager.Dispatch(Message.OnQueue("two").WithContent("hello, world"));
+            await queueManager.Dispatch(Message.WithContent("hello, world").OnQueue("two"));
 
             // Assert.
             Assert.Empty(providerOne.DispatchedMessages);

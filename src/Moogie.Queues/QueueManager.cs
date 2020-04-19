@@ -49,6 +49,12 @@ namespace Moogie.Queues
             return await GetProvider(receivable.Queue).Receive(receivable).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Takes a queue name and returns a queue provider registered by that name. If there is no queue registered
+        /// by that name, then a <see cref="NoRegisteredQueueException" /> exception is thrown.
+        /// </summary>
+        /// <param name="queue">The queue name to search by.</param>
+        /// <returns>An instance of a <see cref="IQueueProvider" /> implementation.</returns>
         private IQueueProvider GetProvider(string queue)
         {
             if (!_queueProviders.ContainsKey(queue))

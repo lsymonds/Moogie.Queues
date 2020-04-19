@@ -8,7 +8,7 @@ namespace Moogie.Queues
         /// <summary>
         /// Gets or sets the queue to receive the messages from.
         /// </summary>
-        public string Queue { get; set; }
+        public string Queue { get; set; } = "default";
 
         /// <summary>
         /// Gets or sets the number of messages to receive.

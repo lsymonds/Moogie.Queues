@@ -5,6 +5,16 @@ namespace Moogie.Queues.Tests
     public class ReceivableExtensionsTests
     {
         [Fact]
+        public void It_Defaults_The_Queue()
+        {
+            // Arrange & Act.
+            var receivable = 1.Message();
+
+            // Assert.
+            Assert.Equal("default", receivable.Queue);
+        }
+
+        [Fact]
         public void It_Adds_The_Queue()
         {
             // Arrange.

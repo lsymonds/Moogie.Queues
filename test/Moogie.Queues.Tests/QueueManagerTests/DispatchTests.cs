@@ -11,11 +11,11 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> ValidationEntities = new[]
         {
             new object[] { null!, typeof(ArgumentNullException) },
-            new object[] { new Message(), typeof(MissingQueueException) },
-            new object[] { Message.OnQueue("foo"), typeof(MissingContentException) },
+            new object[] { new Message { Queue = null }, typeof(MissingQueueException) },
+            new object[] { new Message(), typeof(MissingContentException) },
             new object[]
             {
-                Message.OnQueue("foo").WithContent("abc").WhichExpiresAt(DateTime.Now.AddDays(-1)),
+                Message.WithContent("abc").OnQueue("foo").WhichExpiresAt(DateTime.Now.AddDays(-1)),
                 typeof(InvalidDispatchableExpiryException)
             }
         };
@@ -35,7 +35,7 @@ namespace Moogie.Queues.Tests
         public async Task It_Throws_An_Exception_When_An_Attempt_Is_Made_To_Add_A_Message_To_A_Non_Existent_Queue()
         {
             // Arrange & Act.
-            async Task Act() => await QueueManager.Dispatch(Message.OnQueue("random").WithContent("foo"));
+            async Task Act() => await QueueManager.Dispatch(Message.WithContent("foo").OnQueue("random"));
 
             // Assert.
             await Assert.ThrowsAsync<NoRegisteredQueueException>(Act);
@@ -55,14 +55,14 @@ namespace Moogie.Queues.Tests
 
             // Act.
             await QueueManager.Dispatch(Message
+                .WithContent("hello, provider one")
                 .OnQueue("provider-one")
-                .WithId(id)
-                .WithContent("hello, provider one"));
+                .WithId(id));
 
             await QueueManager.Dispatch(Message
+                .WithContent("hello, provider two")
                 .OnQueue("provider-two")
                 .WithId(secondId)
-                .WithContent("hello, provider two")
                 .WhichExpiresAt(expiry));
 
             // Assert.

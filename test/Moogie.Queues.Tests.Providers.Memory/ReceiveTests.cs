@@ -11,8 +11,8 @@ namespace Moogie.Queues.Tests.Providers.Memory
         public async Task It_Receives_Dispatched_Messages()
         {
             // Arrange.
-            var messageOne = Message.OnQueue("default").WithContent("abc");
-            var messageTwo = Message.OnQueue("default").WithContent("def");
+            var messageOne = Message.WithContent("abc");
+            var messageTwo = Message.WithContent("def");
 
             await QueueManager.Dispatch(messageOne);
             await QueueManager.Dispatch(messageTwo);
@@ -32,10 +32,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
         public async Task It_Does_Not_Receive_Expired_Messages()
         {
             // Arrange.
-            await QueueManager.Dispatch(Message
-                .OnQueue("default")
-                .WithContent("abc")
-                .WhichExpiresAt(DateTime.Now.AddSeconds(1)));
+            await QueueManager.Dispatch(Message.WithContent("abc").WhichExpiresAt(DateTime.Now.AddSeconds(1)));
 
             await Task.Delay(1500);
 
@@ -50,8 +47,8 @@ namespace Moogie.Queues.Tests.Providers.Memory
         public async Task It_Long_Polls_For_Messages_Successfully()
         {
             // Arrange.
-            var messageOne = Message.OnQueue("default").WithContent("abc");
-            var messageTwo = Message.OnQueue("default").WithContent("def");
+            var messageOne = Message.WithContent("abc");
+            var messageTwo = Message.WithContent("def");
 
             await QueueManager.Dispatch(messageOne);
 

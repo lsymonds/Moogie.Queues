@@ -34,7 +34,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
             // Arrange.
             var id = Guid.NewGuid();
 
-            var message = Message.OnQueue("default").WithContent("abc").WithId(id);
+            var message = Message.WithContent("abc").WithId(id);
             await QueueManager.Dispatch(message);
 
             // Act.

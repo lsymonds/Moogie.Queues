@@ -2,8 +2,15 @@ using System;
 
 namespace Moogie.Queues.Validators
 {
+    /// <summary>
+    /// Wrapper class that contains <see cref="Receivable" /> validation methods.
+    /// </summary>
     internal static class ReceivableValidator
     {
+        /// <summary>
+        /// Validates a <see cref="Receivable" /> instance.
+        /// </summary>
+        /// <param name="receivable">The <see cref="Receivable" /> instance to validate.</param>
         public static void Validate(Receivable receivable)
         {
             if (receivable == null)

@@ -2,8 +2,15 @@ using System;
 
 namespace Moogie.Queues.Validators
 {
+    /// <summary>
+    /// Wrapper class that contains <see cref="Message" /> validation methods.
+    /// </summary>
     internal static class MessageValidator
     {
+        /// <summary>
+        /// Validates a <see cref="Message" /> instance.
+        /// </summary>
+        /// <param name="message">The <see cref="Message" /> instance to validate.</param>
         public static void Validate(Message message)
         {
             if (message == null)

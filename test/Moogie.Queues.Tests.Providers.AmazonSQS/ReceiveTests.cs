@@ -12,7 +12,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
         {
             // Arrange.
             var id = Guid.NewGuid();
-            await QueueManager.Dispatch(Message.OnQueue("default").WithContent("abc").WithId(id));
+            await QueueManager.Dispatch(Message.WithContent("abc").WithId(id));
 
             // Act.
             var response = await QueueManager.Receive(1.Message().FromQueue("default"));
@@ -29,9 +29,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
         public async Task It_Does_Not_Receive_An_Expired_Message()
         {
             // Arrange.
-            await QueueManager.Dispatch(Message.OnQueue("default")
-                .WithContent("abc")
-                .WhichExpiresAt(DateTime.Now.AddSeconds(1)));
+            await QueueManager.Dispatch(Message.WithContent("abc").WhichExpiresAt(DateTime.Now.AddSeconds(1)));
 
             await Task.Delay(1000);
 

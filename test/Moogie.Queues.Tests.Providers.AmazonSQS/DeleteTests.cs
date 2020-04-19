@@ -10,7 +10,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
         public async Task It_Successfully_Deletes_A_Message()
         {
             // Arrange.
-            await QueueManager.Dispatch(Message.OnQueue("default").WithContent("abc"));
+            await QueueManager.Dispatch(Message.WithContent("abc"));
             var receivedMessage = await QueueManager.Receive(1.Message().FromQueue("default"));
 
             // Act.

@@ -10,7 +10,8 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> ValidationEntities = new[]
         {
             new object[] { null!, typeof(ArgumentNullException) },
-            new object[] { new Receivable(), typeof(MissingQueueException) },
+
+            new object[] { new Receivable { Queue = null }, typeof(MissingQueueException) },
             new object[]
             {
                 new Receivable { Queue = "foo", MessagesToReceive = -3 },

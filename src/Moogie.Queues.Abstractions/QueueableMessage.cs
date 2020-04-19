@@ -25,6 +25,6 @@ namespace Moogie.Queues
         /// <summary>
         /// Gets or sets the queue associated with the message.
         /// </summary>
-        public string Queue { get; set; }
+        public string Queue { get; set; } = "default";
     }
 }

@@ -10,16 +10,19 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> DeleteParameters = new[]
         {
             new object[] {null!, typeof(ArgumentNullException)},
-            new object[] {new Deletable(), typeof(ArgumentNullException)},
-            new object[] {new Deletable { DeletionAttributes = new Dictionary<string, string>() }, typeof(ArgumentNullException)},
-            new object[] {new Deletable { DeletionAttributes = new Dictionary<string, string> { { "MessageId", "Wub" } } }, typeof(MissingQueueException)}
+            new object[] {new Deletable { Queue = null}, typeof(MissingQueueException)},
+            new object[] {new Deletable { Queue = "one"}, typeof(ArgumentNullException)},
+            new object[] {new Deletable { DeletionAttributes = new Dictionary<string, string>() }, typeof(ArgumentNullException)}
         };
-
+ 
         [Theory]
         [MemberData(nameof(DeleteParameters))]
         public async Task It_Validates_The_Delete_Parameter_Correctly(Deletable deletable, Type exceptionType)
         {
-            // Arrange & Act.
+            // Arrange.
+            QueueManager.AddQueue("one", ProviderOne);
+
+            // Act.
             async Task Act() => await QueueManager.Delete(deletable);
 
             // Assert.

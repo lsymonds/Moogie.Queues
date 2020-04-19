@@ -14,7 +14,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
         {
             // Arrange.
             var expiry = DateTime.Now.AddDays(1);
-            var message = Message.OnQueue("default").WithContent("abc").WhichExpiresAt(expiry);
+            var message = Message.WithContent("abc").WhichExpiresAt(expiry);
 
             // Act.
             var response = await QueueManager.Dispatch(message);

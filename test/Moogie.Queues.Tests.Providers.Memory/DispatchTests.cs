@@ -11,9 +11,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
         {
             // Arrange.
             var id = Guid.NewGuid();
-            var message = Message.OnQueue("default")
-                .WithContent("Hello, worldington.")
-                .WithId(id);
+            var message = Message.WithContent("Hello, worldington.").WithId(id);
 
             // Act.
             var response = await QueueManager.Dispatch(message);
@@ -27,7 +25,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
         public async Task It_Assigns_An_Id_To_A_Dispatched_Message_Without_One()
         {
             // Arrange.
-            var message = Message.OnQueue("default").WithContent("hi");
+            var message = Message.WithContent("hi");
 
             // Act.
             var response = await QueueManager.Dispatch(message);

@@ -13,9 +13,8 @@ namespace Moogie.Queues.Tests.Providers.AzureQueueStorage
             // Arrange.
             var messageId = Guid.NewGuid();
             var expiry = DateTime.Now.AddDays(5);
-            var message = Message.OnQueue("default")
+            var message = Message.WithContent("abc")
                 .WithId(messageId)
-                .WithContent("abc")
                 .WhichExpiresAt(expiry);
 
             // Act.

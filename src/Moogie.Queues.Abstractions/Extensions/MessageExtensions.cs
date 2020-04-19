@@ -18,16 +18,16 @@ namespace Moogie.Queues
             message.Id = id;
             return message;
         }
-
+        
         /// <summary>
-        /// Sets the Content property of the <see cref="Message"/> instance.
+        /// Sets the Queue of the <see cref="Message" /> instance.
         /// </summary>
         /// <param name="message">The <see cref="Message"/> instance to modify.</param>
-        /// <param name="content">The content to include in the message.</param>
+        /// <param name="queue">The queue to set.</param>
         /// <returns>The modified <see cref="Message"/> instance.</returns>
-        public static Message WithContent(this Message message, string content)
+        public static Message OnQueue(this Message message, string queue)
         {
-            message.Content = content;
+            message.Queue = queue;
             return message;
         }
 

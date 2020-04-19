@@ -68,7 +68,7 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
             {
-                var deletable = Deletable.OffOfQueue("default")
+                var deletable = Deletable.OffOfQueue(receivable.Queue)
                     .WithDeletionAttribute(RECEIPT_HANDLE, message.ReceiptHandle);
 
                 var deserialised = await DeserialiseAndHandle(message.Body, deletable).ConfigureAwait(false);

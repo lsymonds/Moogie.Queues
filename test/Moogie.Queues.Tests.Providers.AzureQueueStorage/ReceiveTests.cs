@@ -13,8 +13,8 @@ namespace Moogie.Queues.Tests.Providers.AzureQueueStorage
             // Arrange.
             var messageOneId = Guid.NewGuid();
             var messageTwoId = Guid.NewGuid();
-            var messageOne = Message.OnQueue("default").WithId(messageOneId).WithContent("abc");
-            var messageTwo = Message.OnQueue("default").WithId(messageTwoId).WithContent("def");
+            var messageOne = Message.WithContent("abc").WithId(messageOneId);
+            var messageTwo = Message.WithContent("def").WithId(messageTwoId);
 
             await QueueManager.Dispatch(messageOne);
             await QueueManager.Dispatch(messageTwo);
@@ -38,9 +38,7 @@ namespace Moogie.Queues.Tests.Providers.AzureQueueStorage
         public async Task It_Does_Not_Receive_Expired_Messages()
         {
             // Arrange.
-            await QueueManager.Dispatch(Message.OnQueue("default")
-                .WithContent("abc")
-                .WhichExpiresAt(DateTime.Now.AddSeconds(3)));
+            await QueueManager.Dispatch(Message.WithContent("abc").WhichExpiresAt(DateTime.Now.AddSeconds(3)));
 
             await Task.Delay(4000);
 

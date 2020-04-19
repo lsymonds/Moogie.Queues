@@ -15,15 +15,14 @@ namespace Moogie.Queues
         /// <summary>
         /// The queue to delete the message from.
         /// </summary>
-        /// <value></value>
-        public string Queue { get; set; }
+        public string Queue { get; set; } = "default";
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Deletable" /> class with a particular queue.
         /// </summary>
         /// <param name="queue">The queue to configure the <see cref="Deletable" /> instance with.</param>
         /// <returns>The configured <see cref="Deletable" /> instance.</returns>
-        public static Deletable OffOfQueue(string queue) => new Deletable
+        internal static Deletable OffOfQueue(string queue) => new Deletable
         {
             Queue = queue
         };
