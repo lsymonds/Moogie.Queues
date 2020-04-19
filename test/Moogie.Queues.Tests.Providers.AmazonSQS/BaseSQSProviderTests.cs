@@ -15,7 +15,7 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
         {
             var queueUrl = Environment.GetEnvironmentVariable("SQS_QUEUE_URL");
 
-            var sqsOptions = new SQSOptions
+            var sqsOptions = new SQSProviderOptions
             {
                 Credentials = new BasicAWSCredentials("abc", "def"),
                 QueueUrl = "http://localhost:4566/queue/stuff",

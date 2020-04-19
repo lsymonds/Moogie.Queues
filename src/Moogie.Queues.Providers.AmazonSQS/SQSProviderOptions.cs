@@ -6,7 +6,7 @@ namespace Moogie.Queues
     /// <summary>
     /// Options to configure the <see cref="SQSProvider"/>.
     /// </summary>
-    public class SQSOptions
+    public class SQSProviderOptions
     {
         /// <summary>
         /// Gets or sets the options used to configure the AWS SQS SDK.

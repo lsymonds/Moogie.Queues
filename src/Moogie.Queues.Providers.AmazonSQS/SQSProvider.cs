@@ -14,14 +14,14 @@ namespace Moogie.Queues
     {
         private const string RECEIPT_HANDLE = "ReceiptHandle";
 
-        private readonly SQSOptions _options;
+        private readonly SQSProviderOptions _options;
         private readonly AmazonSQSClient _client;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="SQSProvider"/> class with the configured AWS options.
         /// </summary>
         /// <param name="options">The options to configure the provider with.</param>
-        public SQSProvider(SQSOptions options)
+        public SQSProvider(SQSProviderOptions options)
         {
             _options = options;
 
