@@ -58,6 +58,9 @@ namespace Moogie.Queues
         /// <inheritdoc />
         public override async Task<ReceiveResponse> Receive(Receivable receivable)
         {
+            if (receivable.MessagesToReceive > 10)
+                receivable.MessagesToReceive = 10;
+
             var messages = await _client.ReceiveMessageAsync(new ReceiveMessageRequest
             {
                 QueueUrl = _options.QueueUrl,

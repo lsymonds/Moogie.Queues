@@ -39,5 +39,19 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
             // Assert.
             Assert.Empty(response.Messages);
         }
+
+        [Fact]
+        public async Task It_Sets_The_Maximum_Number_Of_Messages_To_Ten_Regardless_Of_The_Input()
+        {
+            // Arrange.
+            for (int i = 0; i < 20; i++)
+                await QueueManager.Dispatch(Message.WithContent("abc"));
+
+            // Act.
+            var response = await QueueManager.Receive(100.Message().FromQueue("default"));
+
+            // Assert.
+            Assert.Equal(10, response.Messages.Count());
+        }
     }
 }

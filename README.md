@@ -79,7 +79,7 @@ easier.
 
 Should you wish to long poll for messages (i.e. wait for X seconds until a message is received), you should configure
 the `SecondsToWait` property if you are instantiating the class yourself or use the `ButWaitFor` extension if you are
-using the fluent builder. 
+using the fluent builder.
 
 ```csharp
 var receivable = 1.Message().FromQueue("stuff");
@@ -127,6 +127,13 @@ any SQS client options or credentials. You should read up on Amazon's documentat
 leave these. The `Queue` property on the `SQSProviderOptions` class is **always** required and should be set to
 whatever your SQS queue's URL is. Should you wish to use more than one queue URL then you should instantiate a
 separate `SQSProvider` instance for each when you create your `QueueManager` instance.
+
+When receiving messages, the number of messages you ask to return is a **maximum** number of messages. You might receive
+less, but you will never receive more. For example, if only one message is available in the queue then one will be
+returned. If 25 are available then your maximum will be returned.
+
+The maximum number of messages you can return at once is 10. If you configure a number to return over this amount,
+the `SQSProvider` will reset it back to 10.
 
 ### Azure's Queue Storage Provider
 

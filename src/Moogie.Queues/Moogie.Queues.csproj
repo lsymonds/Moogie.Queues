@@ -4,6 +4,15 @@
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Moogie.Queues</PackageId>
+        <PackageTags>queueing;queue abstractions;sqs;queues;azure queues;moogie queues;</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Authors>l_symonds</Authors>
+        <RepositoryUrl>https://github.com/lsymonds/Moogie.Queues</RepositoryUrl>
+        <PackageDescription>Queue providers implemented under a common interface. Use different queueing services without compromising the integrity and future maintainability of your projects.</PackageDescription>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj" />
     </ItemGroup>

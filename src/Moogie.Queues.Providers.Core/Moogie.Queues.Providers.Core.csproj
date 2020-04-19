@@ -4,6 +4,15 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+      <PackageId>Moogie.Queues.Providers.Core</PackageId>
+      <PackageTags>queueing;queue abstractions;sqs;queues;azure queues;moogie queues;</PackageTags>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
+      <Authors>l_symonds</Authors>
+      <RepositoryUrl>https://github.com/lsymonds/Moogie.Queues</RepositoryUrl>
+      <PackageDescription>Core functionality for Moogie.Queues providers.</PackageDescription>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
