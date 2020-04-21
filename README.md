@@ -1,8 +1,5 @@
 # Moogie.Queues
 
-> THIS PACKAGE IS STILL UNDER ACTIVE DEVELOPMENT AND AS SUCH MAY NOT WORK, MAY NOT BE RELEASED OR MAY BE DELETED AT ANY 
-TIME. DO NOT USE THIS PROJECT UNTIL THIS NOTICE IS REMOVED.
-
 Moogie.Queues is a library of queue providers implemented under a common interface. It allows you to use different 
 queue providers without compromising the integrity and future maintainability of your projects. 
 
