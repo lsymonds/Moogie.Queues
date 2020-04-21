@@ -12,4 +12,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>Moogie.Queues.DependencyInjection</PackageId>
+    <PackageTags>queueing;queue abstractions;sqs;queues;azure queues;moogie queues;</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>l_symonds</Authors>
+    <RepositoryUrl>https://github.com/lsymonds/Moogie.Queues</RepositoryUrl>
+    <PackageDescription>Dependency injection extentions for Moogie.Queues.</PackageDescription>
+  </PropertyGroup>
+
 </Project>
