@@ -23,7 +23,8 @@ on the `IQueueManager` interface.
 wherever you instantiate a `QueueManager` instance. You do not need to reference this package in projects where you are
 solely relying on the `IQueueManager` interface.
 
-Then instantiate a `QueueManager` instance or add it to your `ServiceCollection` instance.
+Then instantiate a `QueueManager` instance or add it to your `ServiceCollection` instance by using the `AddMoogieQueues`
+extension method provided by the `Moogie.Queues.DependencyInjection` package.
 
 ```csharp
 serviceCollection.AddMoogieEvents(new QueueRegistration
