@@ -14,12 +14,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj" />
       <ProjectReference Include="..\Moogie.Queues.Providers.Core\Moogie.Queues.Providers.Core.csproj" />
+      <ProjectReference Include="..\Moogie.Queues\Moogie.Queues.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.SQS" Version="3.3.102.90" />
+      <PackageReference Include="AWSSDK.SQS" Version="3.3.102.94" />
       <PackageReference Include="System.Text.Json" Version="4.7.1" />
     </ItemGroup>
 

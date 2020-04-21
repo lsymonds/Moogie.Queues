@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <PackageReference Include="Azure.Storage.Queues" Version="12.3.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
         <PackageReference Include="xunit" Version="2.4.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
@@ -16,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj" />
+      <ProjectReference Include="..\..\src\Moogie.Queues.DependencyInjection\Moogie.Queues.DependencyInjection.csproj" />
       <ProjectReference Include="..\..\src\Moogie.Queues.Providers.AzureQueueStorage\Moogie.Queues.Providers.AzureQueueStorage.csproj" />
       <ProjectReference Include="..\..\src\Moogie.Queues\Moogie.Queues.csproj" />
       <ProjectReference Include="..\..\src\Moogie.Queues.Providers.Core\Moogie.Queues.Providers.Core.csproj" />

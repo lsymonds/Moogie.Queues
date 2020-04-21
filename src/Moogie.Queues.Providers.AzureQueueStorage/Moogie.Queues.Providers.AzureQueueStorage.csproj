@@ -14,8 +14,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj" />
       <ProjectReference Include="..\Moogie.Queues.Providers.Core\Moogie.Queues.Providers.Core.csproj" />
+      <ProjectReference Include="..\Moogie.Queues\Moogie.Queues.csproj" />
     </ItemGroup>
 
     <ItemGroup>

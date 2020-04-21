@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
@@ -15,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Moogie.Queues.Abstractions\Moogie.Queues.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Moogie.Queues.DependencyInjection\Moogie.Queues.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\src\Moogie.Queues.Providers.Memory\Moogie.Queues.Providers.Memory.csproj" />
     <ProjectReference Include="..\..\src\Moogie.Queues\Moogie.Queues.csproj" />
   </ItemGroup>
