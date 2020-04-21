@@ -11,20 +11,20 @@ queue providers without compromising the integrity and future maintainability of
 Install the applicable packages from the following list:
 
 * `Moogie.Queues` - a package that contains the main functionality, interfaces and entities. You should install
-this in your startup project and wherever you wish to inject an `IQueueManager` into your class. This package has
-no other dependencies.
+this in your startup project and wherever you wish to use and/or inject an `IQueueManager` into your class. This package
+has no other dependencies.
 * `Moogie.Queues.DependencyInjection` - a package that contains an extension method that adds Moogie.Queues to your
 `IServiceCollection` implementation instance. If you do not use dependency injection, then you should not install this
 package.
 * `Moogie.Queues.Providers.Memory` - include this whenever you want to use the `MemoryProvider` (usually when writing
 integration tests) and wherever you instantiate a `QueueManager` instance. You do not need to reference this package
-in projects where you are solely relying on the `IQueueProvider` interface.
+in projects where you are solely relying on the `IQueueManager` interface.
 * `Moogie.Queues.Providers.AmazonSQS` - include this whenever you want to use the `SQSProvider` and wherever you
 instantiate a `QueueManager` instance. You do not need to reference this package in projects where you are solely relying 
-on the `IQueueProvider` interface.
+on the `IQueueManager` interface.
 * `Moogie.Queues.Providers.AzureQueueStorage` - include this whenever you want to use the `AzureQueueStorage` and 
 wherever you instantiate a `QueueManager` instance. You do not need to reference this package in projects where you are
-solely relying on the `IQueueProvider` interface.
+solely relying on the `IQueueManager` interface.
 
 Then instantiate a `QueueManager` instance or add it to your `ServiceCollection` instance.
 
