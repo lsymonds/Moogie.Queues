@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Moogie.Queues
@@ -7,6 +8,12 @@ namespace Moogie.Queues
     /// </summary>
     public interface IQueueManager
     {
+        /// <summary>
+        /// Gets the queue providers that have been registered with the current <see cref="IQueueManager"/>
+        /// implementation.
+        /// </summary>
+        IReadOnlyList<RegisteredQueueProvider> RegisteredQueueProviders { get; }
+        
         /// <summary>
         /// Adds a named queue to the internal collection of queue providers.
         /// </summary>

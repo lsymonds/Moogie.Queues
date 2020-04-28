@@ -8,6 +8,11 @@ namespace Moogie.Queues
     public interface IQueueProvider
     {
         /// <summary>
+        /// Gets the name of the provider (i.e. AmazonSQS).
+        /// </summary>
+        string ProviderName { get; }
+        
+        /// <summary>
         /// Delete a message from the queue. Also known as confirming a message in some queue systems.
         /// </summary>
         /// <param name="deletable">The representation of a message to delete.</param>

@@ -15,7 +15,10 @@ namespace Moogie.Queues
         private const string POP_RECEIPT = "PopReceipt";
 
         private readonly AzureQueueStorageOptions _options;
-        private readonly QueueClient _azureQueueClient; 
+        private readonly QueueClient _azureQueueClient;
+
+        /// <inheritdoc />
+        public override string ProviderName { get; } = nameof(AzureQueueStorageProvider);
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AzureQueueStorageProvider" /> class.
@@ -26,7 +29,7 @@ namespace Moogie.Queues
             _options = options;
             _azureQueueClient = new QueueClient(_options.ConnectionString, _options.QueueName);
         }
-        
+
         /// <inheritdoc />
         public override async Task<DeleteResponse> Delete(Deletable deletable)
         {

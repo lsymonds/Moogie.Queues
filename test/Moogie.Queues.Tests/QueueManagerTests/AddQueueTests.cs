@@ -58,6 +58,8 @@ namespace Moogie.Queues.Tests
 
         private class FakeProvider : IQueueProvider
         {
+            public string ProviderName { get; } = "fake";
+
             public Task<DeleteResponse> Delete(Deletable deletable)
             {
                 throw new NotImplementedException();

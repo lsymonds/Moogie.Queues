@@ -15,10 +15,12 @@ namespace Moogie.Queues.Tests
 
         protected class One : FakeProvider
         {
+            public override string ProviderName { get; } = "ProviderOne";
         }
 
         protected class Two : FakeProvider
         {
+            public override string ProviderName { get; } = "ProviderTwo";
         }
     }
 }

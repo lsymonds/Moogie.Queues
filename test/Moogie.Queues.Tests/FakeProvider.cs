@@ -11,6 +11,8 @@ namespace Moogie.Queues.Tests
 
         public List<Receivable> ReceivedMessages { get; set; } = new List<Receivable>();
 
+        public virtual string ProviderName { get; } = "fake";
+
         public Task<DeleteResponse> Delete(Deletable deletable)
         {
             DeletedMessages.Add(deletable);

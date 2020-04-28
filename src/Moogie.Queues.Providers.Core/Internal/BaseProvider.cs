@@ -9,6 +9,9 @@ namespace Moogie.Queues.Internal
     public abstract class BaseProvider : IQueueProvider
     {
         /// <inheritdoc />
+        public abstract string ProviderName { get; }
+
+        /// <inheritdoc />
         public abstract Task<DeleteResponse> Delete(Deletable deletable);
 
         /// <inheritdoc />

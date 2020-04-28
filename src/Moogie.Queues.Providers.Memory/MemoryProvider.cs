@@ -18,6 +18,9 @@ namespace Moogie.Queues
             new ConcurrentDictionary<string, QueueableMessage>();
 
         /// <inheritdoc />
+        public override string ProviderName { get; } = nameof(MemoryProvider);
+
+        /// <inheritdoc />
         public override Task<DeleteResponse> Delete(Deletable deletable)
         {
             _messages.TryRemove(deletable.DeletionAttributes[MESSAGE_ID], out _);

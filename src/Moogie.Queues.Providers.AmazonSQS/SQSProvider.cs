@@ -17,6 +17,9 @@ namespace Moogie.Queues
         private readonly SQSProviderOptions _options;
         private readonly AmazonSQSClient _client;
 
+        /// <inheritdoc />
+        public override string ProviderName { get; } = nameof(SQSProvider);
+
         /// <summary>
         /// Initialises a new instance of the <see cref="SQSProvider"/> class with the configured AWS options.
         /// </summary>

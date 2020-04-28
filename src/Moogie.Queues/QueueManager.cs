@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moogie.Queues.Validators;
 
@@ -12,6 +14,12 @@ namespace Moogie.Queues
     {
         private readonly ConcurrentDictionary<string, IQueueProvider> _queueProviders
             = new ConcurrentDictionary<string, IQueueProvider>();
+
+        /// <inheritdoc />
+        public IReadOnlyList<RegisteredQueueProvider> RegisteredQueueProviders => 
+            _queueProviders.Select(
+                x => new RegisteredQueueProvider {Name = x.Key, ProviderName = x.Value.ProviderName}
+            ).ToList();
 
         /// <inheritdoc />
         public void AddQueue(string queue, IQueueProvider queueProvider)
