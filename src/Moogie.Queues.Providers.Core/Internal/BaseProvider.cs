@@ -36,7 +36,7 @@ namespace Moogie.Queues.Internal
             CancellationToken cancellationToken)
         {
             var deserialised = await content
-                .TryDeserialise<ReceivedMessage>(cancellationToken: cancellationToken)
+                .TryDeserialise<ReceivedMessage>(cancellationToken)
                 .ConfigureAwait(false);
             
             if (deserialised == null)
@@ -44,7 +44,7 @@ namespace Moogie.Queues.Internal
 
             if (deserialised.Expiry != null && deserialised.Expiry < DateTime.Now)
             {
-                await Delete(deletable).ConfigureAwait(false);
+                await Delete(deletable, cancellationToken).ConfigureAwait(false);
                 return null;
             }
 
