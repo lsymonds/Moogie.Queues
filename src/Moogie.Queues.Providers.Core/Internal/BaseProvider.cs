@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Moogie.Queues.Internal
@@ -12,13 +13,14 @@ namespace Moogie.Queues.Internal
         public abstract string ProviderName { get; }
 
         /// <inheritdoc />
-        public abstract Task<DeleteResponse> Delete(Deletable deletable);
+        public abstract Task<DeleteResponse> Delete(Deletable deletable, CancellationToken cancellationToken = default);
 
         /// <inheritdoc />
-        public abstract Task<DispatchResponse> Dispatch(Message message);
+        public abstract Task<DispatchResponse> Dispatch(Message message, CancellationToken cancellationToken = default);
 
         /// <inheritdoc />
-        public abstract Task<ReceiveResponse> Receive(Receivable receivable);
+        public abstract Task<ReceiveResponse> Receive(Receivable receivable,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deserialises a queue message into an instance of type <see cref="ReceivedMessage" />. If the received
@@ -28,10 +30,15 @@ namespace Moogie.Queues.Internal
         /// <param name="deletable">
         /// The <see cref="Deletable" /> instance to use should the message need to be deleted.
         /// </param>
+        /// <param name="cancellationToken">The cancellation token to use in asynchronous operations.</param>
         /// <returns>The deserialised <see cref="ReceivedMessage" />.</returns>
-        protected async Task<ReceivedMessage> DeserialiseAndHandle(string content, Deletable deletable)
+        protected async Task<ReceivedMessage> DeserialiseAndHandle(string content, Deletable deletable,
+            CancellationToken cancellationToken)
         {
-            var deserialised = await content.TryDeserialise<ReceivedMessage>().ConfigureAwait(false);
+            var deserialised = await content
+                .TryDeserialise<ReceivedMessage>(cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+            
             if (deserialised == null)
                 return null;
 

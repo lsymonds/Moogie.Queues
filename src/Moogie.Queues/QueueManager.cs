@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Moogie.Queues.Validators;
 
@@ -32,29 +33,30 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public Task<DeleteResponse> Delete(ReceivedMessage message) => Delete(message.Deletable);
+        public Task<DeleteResponse> Delete(ReceivedMessage message, CancellationToken cancellationToken = default) 
+            => Delete(message.Deletable, cancellationToken);
 
         /// <inheritdoc />
-        public async Task<DeleteResponse> Delete(Deletable deletable)
+        public async Task<DeleteResponse> Delete(Deletable deletable, CancellationToken cancellationToken = default)
         {
             DeletableValidator.Validate(deletable);
-            return await GetProvider(deletable.Queue).Delete(deletable).ConfigureAwait(false);
+            return await GetProvider(deletable.Queue).Delete(deletable, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<DispatchResponse> Dispatch(Message message)
+        public async Task<DispatchResponse> Dispatch(Message message, CancellationToken cancellationToken = default)
         {
             MessageValidator.Validate(message);
             message.Id = message.Id == Guid.Empty ? Guid.NewGuid() : message.Id;
 
-            return await GetProvider(message.Queue).Dispatch(message).ConfigureAwait(false);
+            return await GetProvider(message.Queue).Dispatch(message, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<ReceiveResponse> Receive(Receivable receivable)
+        public async Task<ReceiveResponse> Receive(Receivable receivable, CancellationToken cancellationToken = default)
         {
             ReceivableValidator.Validate(receivable);
-            return await GetProvider(receivable.Queue).Receive(receivable).ConfigureAwait(false);
+            return await GetProvider(receivable.Queue).Receive(receivable, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

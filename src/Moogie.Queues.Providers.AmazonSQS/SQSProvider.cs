@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.Runtime;
 using Amazon.SQS;
@@ -35,31 +36,34 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<DeleteResponse> Delete(Deletable deletable)
+        public override async Task<DeleteResponse> Delete(Deletable deletable,
+            CancellationToken cancellationToken = default)
         {
             var response = await _client.DeleteMessageAsync(new DeleteMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
                 ReceiptHandle = deletable.DeletionAttributes[RECEIPT_HANDLE]
-            }).ConfigureAwait(false);
+            }, cancellationToken).ConfigureAwait(false);
 
-            return new DeleteResponse { Success = response != null && (int)response.HttpStatusCode == 200 };
+            return new DeleteResponse {Success = response != null && (int) response.HttpStatusCode == 200};
         }
 
         /// <inheritdoc />
-        public override async Task<DispatchResponse> Dispatch(Message message)
+        public override async Task<DispatchResponse> Dispatch(Message message,
+            CancellationToken cancellationToken = default)
         {
             await _client.SendMessageAsync(new SendMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
-                MessageBody = await ((QueueableMessage)message).Serialise().ConfigureAwait(false)
-            }).ConfigureAwait(false);
+                MessageBody = await ((QueueableMessage) message).Serialise(cancellationToken).ConfigureAwait(false)
+            }, cancellationToken).ConfigureAwait(false);
 
-            return new DispatchResponse { MessageId = message.Id };
+            return new DispatchResponse {MessageId = message.Id};
         }
 
         /// <inheritdoc />
-        public override async Task<ReceiveResponse> Receive(Receivable receivable)
+        public override async Task<ReceiveResponse> Receive(Receivable receivable,
+            CancellationToken cancellationToken = default)
         {
             if (receivable.MessagesToReceive > 10)
                 receivable.MessagesToReceive = 10;
@@ -69,7 +73,7 @@ namespace Moogie.Queues
                 QueueUrl = _options.QueueUrl,
                 WaitTimeSeconds = receivable.SecondsToWait ?? 0,
                 MaxNumberOfMessages = receivable.MessagesToReceive
-            }).ConfigureAwait(false);
+            }, cancellationToken).ConfigureAwait(false);
 
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
@@ -77,7 +81,8 @@ namespace Moogie.Queues
                 var deletable = Deletable.OffOfQueue(receivable.Queue)
                     .WithDeletionAttribute(RECEIPT_HANDLE, message.ReceiptHandle);
 
-                var deserialised = await DeserialiseAndHandle(message.Body, deletable).ConfigureAwait(false);
+                var deserialised = await DeserialiseAndHandle(message.Body, deletable, cancellationToken)
+                    .ConfigureAwait(false);
                 if (deserialised != null)
                     messagesToReturn.Add(deserialised);
             }

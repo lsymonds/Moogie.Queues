@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -60,17 +61,17 @@ namespace Moogie.Queues.Tests
         {
             public string ProviderName { get; } = "fake";
 
-            public Task<DeleteResponse> Delete(Deletable deletable)
+            public Task<DeleteResponse> Delete(Deletable deletable, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<DispatchResponse> Dispatch(Message message)
+            public Task<DispatchResponse> Dispatch(Message message, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<ReceiveResponse> Receive(Receivable receivable)
+            public Task<ReceiveResponse> Receive(Receivable receivable, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }

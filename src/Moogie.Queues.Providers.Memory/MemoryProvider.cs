@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Moogie.Queues.Internal;
 
@@ -21,14 +22,14 @@ namespace Moogie.Queues
         public override string ProviderName { get; } = nameof(MemoryProvider);
 
         /// <inheritdoc />
-        public override Task<DeleteResponse> Delete(Deletable deletable)
+        public override Task<DeleteResponse> Delete(Deletable deletable, CancellationToken cancellationToken = default)
         {
             _messages.TryRemove(deletable.DeletionAttributes[MESSAGE_ID], out _);
             return Task.FromResult(new DeleteResponse());
         }
 
         /// <inheritdoc />
-        public override Task<DispatchResponse> Dispatch(Message message)
+        public override Task<DispatchResponse> Dispatch(Message message, CancellationToken cancellationToken = default)
         {
             _messages.TryAdd(message.Id.ToString(), message);
             return Task.FromResult(new DispatchResponse {MessageId = message.Id});
@@ -46,8 +47,10 @@ namespace Moogie.Queues
         public bool HasMessages => _messages.Any();
 
         /// <inheritdoc />
-        public override async Task<ReceiveResponse> Receive(Receivable receivable)
-            => receivable.SecondsToWait != null ? await LongPoll(receivable) : GetMessages(receivable);
+        public override async Task<ReceiveResponse> Receive(
+            Receivable receivable,
+            CancellationToken cancellationToken = default
+        ) => receivable.SecondsToWait != null ? await LongPoll(receivable) : GetMessages(receivable);
 
         private async Task<ReceiveResponse> LongPoll(Receivable receivable)
         {

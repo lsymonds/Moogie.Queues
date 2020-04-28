@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Moogie.Queues.Tests
@@ -13,19 +14,19 @@ namespace Moogie.Queues.Tests
 
         public virtual string ProviderName { get; } = "fake";
 
-        public Task<DeleteResponse> Delete(Deletable deletable)
+        public Task<DeleteResponse> Delete(Deletable deletable, CancellationToken cancellationToken = default)
         {
             DeletedMessages.Add(deletable);
             return Task.FromResult(new DeleteResponse());
         }
 
-        public Task<DispatchResponse> Dispatch(Message message)
+        public Task<DispatchResponse> Dispatch(Message message, CancellationToken cancellationToken = default)
         {
             DispatchedMessages.Add(message);
             return Task.FromResult(new DispatchResponse());
         }
 
-        public Task<ReceiveResponse> Receive(Receivable receivable)
+        public Task<ReceiveResponse> Receive(Receivable receivable, CancellationToken cancellationToken = default)
         {
             ReceivedMessages.Add(receivable);
             return Task.FromResult(new ReceiveResponse());
