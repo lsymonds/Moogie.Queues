@@ -3,14 +3,17 @@ using System.Collections.Generic;
 namespace Moogie.Queues
 {
     /// <summary>
-    /// Represents something which can be deleted.
+    /// Represents something which can be deleted. You probably shouldn't instantiate or modify this yourself and
+    /// should instead use the <see cref="Deletable"/> class returned from the IQueueManager.Receive methods.
+    ///
+    /// If you do decide to instantiate this yourself, please make sure you know what you're doing.
     /// </summary>
     public class Deletable
     {
         /// <summary>
         /// Gets or sets the attributes used when deleting a message from a queue provider.
         /// </summary>
-        internal Dictionary<string, string> DeletionAttributes { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> DeletionAttributes { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// The queue to delete the message from.
@@ -22,7 +25,7 @@ namespace Moogie.Queues
         /// </summary>
         /// <param name="queue">The queue to configure the <see cref="Deletable" /> instance with.</param>
         /// <returns>The configured <see cref="Deletable" /> instance.</returns>
-        internal static Deletable OffOfQueue(string queue) => new Deletable
+        public static Deletable OffOfQueue(string queue) => new Deletable
         {
             Queue = queue
         };
