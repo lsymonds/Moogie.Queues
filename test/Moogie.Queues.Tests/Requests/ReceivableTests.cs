@@ -1,8 +1,9 @@
+using System.Threading.Tasks;
 using Xunit;
 
-namespace Moogie.Queues.Tests
+namespace Moogie.Queues.Tests.Requests
 {
-    public class ReceivableExtensionsTests
+    public class ReceivableTests
     {
         [Fact]
         public void It_Defaults_The_Queue()

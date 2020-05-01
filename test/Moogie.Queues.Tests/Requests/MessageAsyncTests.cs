@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Moogie.Queues.Tests
+namespace Moogie.Queues.Tests.Requests
 {
-    public class MessageAsyncExtensionsTests
+    public class MessageAsyncTests
     {
         private readonly ExampleObjectToBeSerialised _content = new ExampleObjectToBeSerialised
         {

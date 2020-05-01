@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Moogie.Queues.Internal;
 
 namespace Moogie.Queues
 {
@@ -22,5 +25,14 @@ namespace Moogie.Queues
         /// Gets or sets the object used to delete this message from the queue.
         /// </summary>
         public Deletable Deletable { get; set; }
+
+        /// <summary>
+        /// Reads the <see cref="Content"/> property as an object.
+        /// </summary>
+        /// <param name="cancellationToken">The token used to cancel the serialisation.</param>
+        /// <typeparam name="T">The type to deserialise the message into.</typeparam>
+        /// <returns>An asynchronous <see cref="Task"/> yielding the deserialised content.</returns>
+        public async Task<T> ReadContentAs<T>(CancellationToken cancellationToken = default)
+            => await Content.TryDeserialise<T>(cancellationToken);
     }
 }

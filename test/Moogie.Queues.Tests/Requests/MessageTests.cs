@@ -1,9 +1,9 @@
 using System;
 using Xunit;
 
-namespace Moogie.Queues.Tests
+namespace Moogie.Queues.Tests.Requests
 {
-    public class MessageExtensionsTests
+    public class MessageTests
     {
         [Fact]
         public void It_Adds_The_Id()
