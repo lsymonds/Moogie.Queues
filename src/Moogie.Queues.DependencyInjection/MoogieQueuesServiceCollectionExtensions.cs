@@ -18,7 +18,8 @@ namespace Moogie.Queues
         /// <returns>The modified <see cref="IServiceCollection"/> implementation instance.</returns>
         public static IServiceCollection AddMoogieQueues(
             this IServiceCollection serviceCollection,
-            params QueueRegistration[] queueRegistrations)
+            params QueueRegistration[] queueRegistrations
+        )
         {
             var queueManager = new QueueManager();
 

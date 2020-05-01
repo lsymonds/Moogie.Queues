@@ -13,4 +13,8 @@
         <PackageDescription>Queue providers implemented under a common interface. Use different queueing services without compromising the integrity and future maintainability of your projects.</PackageDescription>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" Version="4.7.1" />
+    </ItemGroup>
+
 </Project>

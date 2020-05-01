@@ -19,8 +19,10 @@ namespace Moogie.Queues.Internal
         public abstract Task<DispatchResponse> Dispatch(Message message, CancellationToken cancellationToken = default);
 
         /// <inheritdoc />
-        public abstract Task<ReceiveResponse> Receive(Receivable receivable,
-            CancellationToken cancellationToken = default);
+        public abstract Task<ReceiveResponse> Receive(
+            Receivable receivable,
+            CancellationToken cancellationToken = default
+        );
 
         /// <summary>
         /// Deserialises a queue message into an instance of type <see cref="ReceivedMessage" />. If the received
@@ -32,8 +34,11 @@ namespace Moogie.Queues.Internal
         /// </param>
         /// <param name="cancellationToken">The cancellation token to use in asynchronous operations.</param>
         /// <returns>The deserialised <see cref="ReceivedMessage" />.</returns>
-        protected async Task<ReceivedMessage> DeserialiseAndHandle(string content, Deletable deletable,
-            CancellationToken cancellationToken)
+        protected async Task<ReceivedMessage> DeserialiseAndHandle(
+            string content, 
+            Deletable deletable,
+            CancellationToken cancellationToken
+        )
         {
             var deserialised = await content
                 .TryDeserialise<ReceivedMessage>(cancellationToken)

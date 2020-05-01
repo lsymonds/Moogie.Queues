@@ -59,7 +59,10 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<ReceiveResponse> Receive(Receivable receivable, CancellationToken cancellationToken = default)
+        public override async Task<ReceiveResponse> Receive(
+            Receivable receivable, 
+            CancellationToken cancellationToken = default
+        )
         {
             if (receivable.SecondsToWait != null && !_options.IgnoreLongPollingException)
                 throw new FeatureNotYetSupportedException("AzureQueueStorageProvider: Long polling");

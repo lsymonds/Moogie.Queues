@@ -38,7 +38,10 @@ namespace Moogie.Queues.Internal
         /// <param name="cancellationToken">The optional cancellation token to use in asynchronous operations.</param>
         /// <typeparam name="T">The type to deserialise into.</typeparam>
         /// <returns>The instance of the deserialised object or null if the deserialisation failed.</returns>
-        public static async Task<T> TryDeserialise<T>(this string message, CancellationToken cancellationToken = default)
+        public static async Task<T> TryDeserialise<T>(
+            this string message, 
+            CancellationToken cancellationToken = default
+        )
         {
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(message)))
                 return await JsonSerializer.DeserializeAsync<T>(stream, cancellationToken: cancellationToken);

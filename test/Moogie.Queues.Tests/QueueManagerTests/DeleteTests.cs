@@ -33,8 +33,6 @@ namespace Moogie.Queues.Tests
         public async Task It_Attempts_To_Delete_The_Message_From_The_Queue()
         {
             // Arrange.
-            var id = Guid.NewGuid();
-
             QueueManager.AddQueue("one", ProviderOne);
             QueueManager.AddQueue("two", ProviderTwo);
 

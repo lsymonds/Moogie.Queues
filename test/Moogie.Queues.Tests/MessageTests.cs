@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Moogie.Queues.Tests
 {
-    public class DispatchableExtensionsTests
+    public class MessageExtensionsTests
     {
         [Fact]
         public void It_Adds_The_Id()

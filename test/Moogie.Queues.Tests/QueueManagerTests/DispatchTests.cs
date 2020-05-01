@@ -54,16 +54,20 @@ namespace Moogie.Queues.Tests
             var expiry = DateTime.Now.AddMonths(1);
 
             // Act.
-            await QueueManager.Dispatch(Message
-                .WithContent("hello, provider one")
-                .OnQueue("provider-one")
-                .WithId(id));
+            await QueueManager.Dispatch(
+                Message
+                    .WithContent("hello, provider one")
+                    .OnQueue("provider-one")
+                    .WithId(id)
+            );
 
-            await QueueManager.Dispatch(Message
-                .WithContent("hello, provider two")
-                .OnQueue("provider-two")
-                .WithId(secondId)
-                .WhichExpiresAt(expiry));
+            await QueueManager.Dispatch(
+                await Message
+                    .WithContent(new ExampleContent { Announcement = "hello, provider two" })
+                    .OnQueue("provider-two")
+                    .WithId(secondId)
+                    .WhichExpiresAt(expiry)
+            );
 
             // Assert.
             Assert.Single(ProviderOne.DispatchedMessages);
@@ -73,9 +77,14 @@ namespace Moogie.Queues.Tests
             Assert.Equal(secondId, ProviderTwo.DispatchedMessages.First().Id);
 
             Assert.Equal("hello, provider one", ProviderOne.DispatchedMessages.First().Content);
-            Assert.Equal("hello, provider two", ProviderTwo.DispatchedMessages.First().Content);
+            Assert.Contains("hello, provider two", ProviderTwo.DispatchedMessages.First().Content);
 
             Assert.Equal(expiry, ProviderTwo.DispatchedMessages.First().Expiry);
         }
+    }
+
+    public class ExampleContent
+    {
+        public string Announcement { get; set; }
     }
 }
