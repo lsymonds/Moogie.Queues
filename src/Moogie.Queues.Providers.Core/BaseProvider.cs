@@ -60,6 +60,12 @@ namespace Moogie.Queues.Internal
             return deserialised;
         }
 
+        /// <summary>
+        /// Casts a deletable into the type required by the provider.
+        /// </summary>
+        /// <param name="deletable">The deletable to cast and validate.</param>
+        /// <param name="validationCriteria">The validation criteria.</param>
+        /// <returns>The casted deletable.</returns>
         protected TDeletable CastAndValidate(
             Deletable deletable, 
             params Func<TDeletable, (bool success, string attributeName)>[] validationCriteria
@@ -70,7 +76,7 @@ namespace Moogie.Queues.Internal
             {
                 var criteriaResponse = criteria(casted);
                 if (!criteriaResponse.success)
-                    throw new ArgumentNullException();
+                    throw new ArgumentException(criteriaResponse.attributeName);
             }
 
             return casted;
