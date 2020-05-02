@@ -10,9 +10,7 @@ namespace Moogie.Queues.Tests
         public static IEnumerable<object[]> DeleteParameters = new[]
         {
             new object[] {null!, typeof(ArgumentNullException)},
-            new object[] {new Deletable { Queue = null}, typeof(MissingQueueException)},
-            new object[] {new Deletable { Queue = "one"}, typeof(ArgumentNullException)},
-            new object[] {new Deletable { DeletionAttributes = new Dictionary<string, string>() }, typeof(ArgumentNullException)}
+            new object[] {new TestDeletable { Queue = null}, typeof(MissingQueueException)}
         };
  
         [Theory]
@@ -36,11 +34,7 @@ namespace Moogie.Queues.Tests
             QueueManager.AddQueue("one", ProviderOne);
             QueueManager.AddQueue("two", ProviderTwo);
 
-            var deletable = new Deletable
-            {
-                Queue = "two",
-                DeletionAttributes = new Dictionary<string, string> { { "MessageId", "Wub" } }
-            };
+            var deletable = new TestDeletable { Queue = "two" };
 
             // Act.
             await QueueManager.Delete(deletable);
@@ -49,5 +43,9 @@ namespace Moogie.Queues.Tests
             Assert.Empty(ProviderOne.DeletedMessages);
             Assert.Single(ProviderTwo.DeletedMessages);
         }
+    }
+
+    public class TestDeletable : Deletable
+    {
     }
 }

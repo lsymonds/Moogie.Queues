@@ -15,13 +15,10 @@ namespace Moogie.Queues.Tests.Providers.Memory
             var id = Guid.NewGuid();
 
             // Act.
-            await QueueManager.Delete(new Deletable
+            await QueueManager.Delete(new MemoryDeletable
             {
                 Queue = "default",
-                DeletionAttributes = new Dictionary<string, string>
-                {
-                    { "MessageId", id.ToString() }
-                }
+                MessageId = id.ToString()
             });
 
             // Assert.

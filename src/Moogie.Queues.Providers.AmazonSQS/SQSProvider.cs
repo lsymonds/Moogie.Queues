@@ -11,10 +11,8 @@ namespace Moogie.Queues
     /// <summary>
     /// Moogie.Queues provider for Amazon's Simple Queue Service.
     /// </summary>
-    public class SQSProvider : BaseProvider
+    public class SQSProvider : BaseProvider<SQSDeletable>
     {
-        private const string RECEIPT_HANDLE = "ReceiptHandle";
-
         private readonly SQSProviderOptions _options;
         private readonly AmazonSQSClient _client;
 
@@ -36,13 +34,20 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<DeleteResponse> Delete(Deletable deletable,
-            CancellationToken cancellationToken = default)
+        public override async Task<DeleteResponse> Delete(
+            Deletable deletable,
+            CancellationToken cancellationToken = default
+        )
         {
+            var sqsDeletable = CastAndValidate(
+                deletable,
+                d => (!string.IsNullOrWhiteSpace(d.ReceiptHandle), nameof(d.ReceiptHandle))
+            );
+            
             var response = await _client.DeleteMessageAsync(new DeleteMessageRequest
             {
                 QueueUrl = _options.QueueUrl,
-                ReceiptHandle = deletable.DeletionAttributes[RECEIPT_HANDLE]
+                ReceiptHandle = sqsDeletable.ReceiptHandle
             }, cancellationToken).ConfigureAwait(false);
 
             return new DeleteResponse {Success = response != null && (int) response.HttpStatusCode == 200};
@@ -78,8 +83,7 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Messages)
             {
-                var deletable = Deletable.OffOfQueue(receivable.Queue)
-                    .WithDeletionAttribute(RECEIPT_HANDLE, message.ReceiptHandle);
+                var deletable = new SQSDeletable { Queue = receivable.Queue, ReceiptHandle = message.ReceiptHandle };
 
                 var deserialised = await DeserialiseAndHandle(message.Body, deletable, cancellationToken)
                     .ConfigureAwait(false);

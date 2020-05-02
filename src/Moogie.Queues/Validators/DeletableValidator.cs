@@ -18,9 +18,6 @@ namespace Moogie.Queues.Validators
 
             if (string.IsNullOrWhiteSpace(deletable.Queue))
                 throw new MissingQueueException("Deletable");
-
-            if (deletable.DeletionAttributes == null || deletable.DeletionAttributes.Count == 0)
-                throw new ArgumentNullException(nameof(deletable.DeletionAttributes));
         }
     }
 }

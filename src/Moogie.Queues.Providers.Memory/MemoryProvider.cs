@@ -11,10 +11,8 @@ namespace Moogie.Queues
     /// <summary>
     /// In memory queue provider for testing purposes.
     /// </summary>
-    public class MemoryProvider : BaseProvider
+    public class MemoryProvider : BaseProvider<MemoryDeletable>
     {
-        private const string MESSAGE_ID = "MessageId";
-
         private readonly ConcurrentDictionary<string, QueueableMessage> _messages =
             new ConcurrentDictionary<string, QueueableMessage>();
 
@@ -22,9 +20,16 @@ namespace Moogie.Queues
         public override string ProviderName { get; } = nameof(MemoryProvider);
 
         /// <inheritdoc />
-        public override Task<DeleteResponse> Delete(Deletable deletable, CancellationToken cancellationToken = default)
+        public override Task<DeleteResponse> Delete(
+            Deletable deletable, 
+            CancellationToken cancellationToken = default
+        )
         {
-            _messages.TryRemove(deletable.DeletionAttributes[MESSAGE_ID], out _);
+            var memoryDeletable = CastAndValidate(
+                deletable,
+                d => (!string.IsNullOrWhiteSpace(d.MessageId), nameof(d.MessageId))
+            );
+            _messages.TryRemove(memoryDeletable.MessageId, out _);
             return Task.FromResult(new DeleteResponse());
         }
 
@@ -80,7 +85,7 @@ namespace Moogie.Queues
                 {
                     Id = x.Value.Id,
                     Content = x.Value.Content,
-                    Deletable = Deletable.OffOfQueue(receivable.Queue).WithDeletionAttribute(MESSAGE_ID, x.Value.Id.ToString()),
+                    Deletable = new MemoryDeletable { Queue = receivable.Queue, MessageId = x.Value.Id.ToString() },
                     Queue = x.Value.Queue
                 });
 

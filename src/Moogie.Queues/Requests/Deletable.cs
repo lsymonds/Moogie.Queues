@@ -1,33 +1,14 @@
-using System.Collections.Generic;
-
 namespace Moogie.Queues
 {
     /// <summary>
-    /// Represents something which can be deleted. You probably shouldn't instantiate or modify this yourself and
-    /// should instead use the <see cref="Deletable"/> class returned from the IQueueManager.Receive methods.
-    ///
-    /// If you do decide to instantiate this yourself, please make sure you know what you're doing.
+    /// Represents something which can be deleted. This class is inherited by individual provider deletable entities
+    /// which contain the required attributes to delete a queue message.
     /// </summary>
-    public class Deletable
+    public abstract class Deletable
     {
-        /// <summary>
-        /// Gets or sets the attributes used when deleting a message from a queue provider.
-        /// </summary>
-        public Dictionary<string, string> DeletionAttributes { get; set; } = new Dictionary<string, string>();
-
         /// <summary>
         /// The queue to delete the message from.
         /// </summary>
         public string Queue { get; set; } = "default";
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="Deletable" /> class with a particular queue.
-        /// </summary>
-        /// <param name="queue">The queue to configure the <see cref="Deletable" /> instance with.</param>
-        /// <returns>The configured <see cref="Deletable" /> instance.</returns>
-        public static Deletable OffOfQueue(string queue) => new Deletable
-        {
-            Queue = queue
-        };
     }
 }

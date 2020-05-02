@@ -10,11 +10,8 @@ namespace Moogie.Queues
     /// <summary>
     /// Moogie.Queues provider for Azure's Queue Storage.
     /// </summary>
-    public class AzureQueueStorageProvider : BaseProvider
+    public class AzureQueueStorageProvider : BaseProvider<AzureQueueStorageDeletable>
     {
-        private const string MESSAGE_ID = "MessageId";
-        private const string POP_RECEIPT = "PopReceipt";
-
         private readonly AzureQueueStorageOptions _options;
         private readonly QueueClient _azureQueueClient;
 
@@ -32,15 +29,21 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<DeleteResponse> Delete(Deletable deletable,
-            CancellationToken cancellationToken = default)
+        public override async Task<DeleteResponse> Delete(
+            Deletable deletable,
+            CancellationToken cancellationToken = default
+        )
         {
-            var messageId = deletable.DeletionAttributes[MESSAGE_ID];
-            var popReceipt = deletable.DeletionAttributes[POP_RECEIPT];
-
+            var azureDeletable = CastAndValidate(
+                deletable,
+                d => (!string.IsNullOrWhiteSpace(d.MessageId), nameof(d.MessageId)),
+                d => (!string.IsNullOrWhiteSpace(d.PopId), nameof(d.PopId))
+            );
+            
             var response = await _azureQueueClient
-                .DeleteMessageAsync(messageId, popReceipt, cancellationToken)
+                .DeleteMessageAsync(azureDeletable.MessageId, azureDeletable.PopId, cancellationToken)
                 .ConfigureAwait(false);
+            
             return new DeleteResponse {Success = response.Status == 204};
         }
 
@@ -49,9 +52,8 @@ namespace Moogie.Queues
             CancellationToken cancellationToken = default)
         {
             var serialisedMessage = await message.Serialise(cancellationToken);
-            
-            var timeToLive = message.Expiry != null ? message.Expiry - DateTime.Now : null;
-            var response = await _azureQueueClient
+
+            await _azureQueueClient
                 .SendMessageAsync(serialisedMessage, cancellationToken)
                 .ConfigureAwait(false);
 
@@ -74,9 +76,12 @@ namespace Moogie.Queues
             var messagesToReturn = new List<ReceivedMessage>();
             foreach (var message in messages.Value)
             {
-                var deletable = Deletable.OffOfQueue(receivable.Queue)
-                    .WithDeletionAttribute(MESSAGE_ID, message.MessageId)
-                    .WithDeletionAttribute(POP_RECEIPT, message.PopReceipt);
+                var deletable = new AzureQueueStorageDeletable
+                {
+                    Queue = receivable.Queue,
+                    MessageId = message.MessageId,
+                    PopId = message.PopReceipt
+                };
 
                 var handledMessage = await DeserialiseAndHandle(message.MessageText, deletable, cancellationToken)
                     .ConfigureAwait(false);
