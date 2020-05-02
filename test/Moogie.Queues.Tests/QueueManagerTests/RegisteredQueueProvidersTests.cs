@@ -16,8 +16,14 @@ namespace Moogie.Queues.Tests
 
             // Assert.
             Assert.Equal(2, registeredProviders.Count);
-            Assert.Single(registeredProviders, x => x.Name == "one" && x.ProviderName == "ProviderOne");
-            Assert.Single(registeredProviders, x => x.Name == "two" && x.ProviderName == "ProviderTwo");
+            Assert.Single(
+                registeredProviders, 
+                provider => provider.Name == "one" && provider.ProviderName == "ProviderOne"
+            );
+            Assert.Single(
+                registeredProviders, 
+                provider => provider.Name == "two" && provider.ProviderName == "ProviderTwo"
+            );
         }
     }
 }

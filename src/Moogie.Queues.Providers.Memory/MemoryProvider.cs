@@ -79,14 +79,14 @@ namespace Moogie.Queues
         private ReceiveResponse GetMessages(Receivable receivable)
         {
             var messages = _messages
-                .Where(x => x.Value.Expiry == null || x.Value.Expiry > DateTime.Now)
+                .Where(message => message.Value.Expiry == null || message.Value.Expiry > DateTime.Now)
                 .Take(receivable.MessagesToReceive)
-                .Select(x => new ReceivedMessage
+                .Select(message => new ReceivedMessage
                 {
-                    Id = x.Value.Id,
-                    Content = x.Value.Content,
-                    Deletable = new MemoryDeletable { Queue = receivable.Queue, MessageId = x.Value.Id.ToString() },
-                    Queue = x.Value.Queue
+                    Id = message.Value.Id,
+                    Content = message.Value.Content,
+                    Deletable = new MemoryDeletable { Queue = receivable.Queue, MessageId = message.Value.Id.ToString() },
+                    Queue = message.Value.Queue
                 });
 
             return new ReceiveResponse {Messages = messages};

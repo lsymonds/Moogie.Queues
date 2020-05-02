@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,8 +47,10 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<DispatchResponse> Dispatch(Message message,
-            CancellationToken cancellationToken = default)
+        public override async Task<DispatchResponse> Dispatch(
+            Message message,
+            CancellationToken cancellationToken = default
+        )
         {
             var serialisedMessage = await message.Serialise(cancellationToken);
 

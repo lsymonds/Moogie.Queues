@@ -17,9 +17,10 @@ namespace Moogie.Queues
             = new ConcurrentDictionary<string, IQueueProvider>();
 
         /// <inheritdoc />
-        public IReadOnlyList<RegisteredQueueProvider> RegisteredQueueProviders => 
+        public IReadOnlyList<RegisteredQueueProvider> RegisteredQueueProviders =>
             _queueProviders.Select(
-                x => new RegisteredQueueProvider {Name = x.Key, ProviderName = x.Value.ProviderName}
+                provider => new RegisteredQueueProvider
+                    { Name = provider.Key, ProviderName = provider.Value.ProviderName }
             ).ToList();
 
         /// <inheritdoc />

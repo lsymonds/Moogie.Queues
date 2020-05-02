@@ -54,8 +54,10 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<DispatchResponse> Dispatch(Message message,
-            CancellationToken cancellationToken = default)
+        public override async Task<DispatchResponse> Dispatch(
+            Message message,
+            CancellationToken cancellationToken = default
+        )
         {
             await _client.SendMessageAsync(new SendMessageRequest
             {
@@ -67,8 +69,10 @@ namespace Moogie.Queues
         }
 
         /// <inheritdoc />
-        public override async Task<ReceiveResponse> Receive(Receivable receivable,
-            CancellationToken cancellationToken = default)
+        public override async Task<ReceiveResponse> Receive(
+            Receivable receivable,
+            CancellationToken cancellationToken = default
+        )
         {
             if (receivable.MessagesToReceive > 10)
                 receivable.MessagesToReceive = 10;

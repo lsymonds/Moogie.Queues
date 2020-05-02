@@ -24,7 +24,7 @@ namespace Moogie.Queues.Tests.Providers.Memory
             var listOfMessages = messages.Messages.ToList();
 
             Assert.Equal(2, listOfMessages.Count);
-            Assert.Single(listOfMessages, x => x.Content == "abc");
+            Assert.Single(listOfMessages, message => message.Content == "abc");
             Assert.Single(listOfMessages, x => x.Content == "def");
         }
 

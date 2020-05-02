@@ -13,8 +13,6 @@ namespace Moogie.Queues.Tests.Providers.AmazonSQS
 
         protected BaseSQSProviderTests()
         {
-            var queueUrl = Environment.GetEnvironmentVariable("SQS_QUEUE_URL");
-
             var sqsOptions = new SQSProviderOptions
             {
                 Credentials = new BasicAWSCredentials("abc", "def"),

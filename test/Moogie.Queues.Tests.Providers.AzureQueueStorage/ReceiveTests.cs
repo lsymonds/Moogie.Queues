@@ -27,11 +27,11 @@ namespace Moogie.Queues.Tests.Providers.AzureQueueStorage
 
             var listOfMessages = response.Messages.ToList();
 
-            Assert.Equal(2, listOfMessages.Count());
-            Assert.Contains(listOfMessages, x => x.Id == messageOneId);
-            Assert.Contains(listOfMessages, x => x.Id == messageTwoId);
-            Assert.Contains(listOfMessages, x => x.Content == "abc");
-            Assert.Contains(listOfMessages, x => x.Content == "def");
+            Assert.Equal(2, listOfMessages.Count);
+            Assert.Contains(listOfMessages, message => message.Id == messageOneId);
+            Assert.Contains(listOfMessages, message => message.Id == messageTwoId);
+            Assert.Contains(listOfMessages, message => message.Content == "abc");
+            Assert.Contains(listOfMessages, message => message.Content == "def");
         }
 
         [Fact]

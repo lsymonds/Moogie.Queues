@@ -14,8 +14,10 @@ namespace Moogie.Queues.Tests
 
             var providerOne = new ProviderOne();
             var providerTwo = new ProviderTwo();
-            serviceCollection.AddMoogieQueues(new QueueRegistration {Name = "one", QueueProvider = providerOne},
-                new QueueRegistration {Name = "two", QueueProvider = providerTwo});
+            serviceCollection.AddMoogieQueues(
+                new QueueRegistration { Name = "one", QueueProvider = providerOne },
+                new QueueRegistration { Name = "two", QueueProvider = providerTwo }
+            );
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var queueManager = serviceProvider.GetService<IQueueManager>();
@@ -25,7 +27,7 @@ namespace Moogie.Queues.Tests
 
             // Assert.
             Assert.Empty(providerOne.DispatchedMessages);
-            Assert.Single(providerTwo.DispatchedMessages, x => x.Content == "hello, world");
+            Assert.Single(providerTwo.DispatchedMessages, message => message.Content == "hello, world");
         }
 
         private class ProviderOne : FakeProvider
