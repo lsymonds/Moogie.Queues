@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.SQS" Version="3.3.102.110" />
+      <PackageReference Include="AWSSDK.SQS" Version="3.3.102.111" />
       <PackageReference Include="System.Text.Json" Version="4.7.2" />
     </ItemGroup>
 
