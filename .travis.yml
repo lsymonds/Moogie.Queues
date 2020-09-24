@@ -12,5 +12,5 @@ before_script:
 - docker run -d -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite
 
 script:
-- dotnet build Moogie.Queues.sln
+- dotnet build Brits.sln
 - dotnet test

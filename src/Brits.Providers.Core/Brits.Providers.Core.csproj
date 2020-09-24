@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+      <PackageId>Brits.Providers.Core</PackageId>
+      <PackageTags>queueing;queue abstractions;sqs;queues;azure queues;</PackageTags>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
+      <Authors>l_symonds</Authors>
+      <RepositoryUrl>https://github.com/lsymonds/Brits</RepositoryUrl>
+      <PackageDescription>Core functionality for Brits providers.</PackageDescription>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Brits\Brits.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,33 +1,33 @@
-# Moogie.Queues
+# Brits
 
-Moogie.Queues is a library of queue providers implemented under a common interface. It allows you to use different 
+Brits is a library of queue providers implemented under a common interface. It allows you to use different 
 queue providers without compromising the integrity and future maintainability of your projects. 
 
 ## Installation
 
 Install the applicable packages from the following list:
 
-* `Moogie.Queues` - a package that contains the main functionality, interfaces and entities. You should install
+* `Brits` - a package that contains the main functionality, interfaces and entities. You should install
 this in your startup project and wherever you wish to use and/or inject an `IQueueManager` into your class. This package
 has no other dependencies.
-* `Moogie.Queues.DependencyInjection` - a package that contains an extension method that adds Moogie.Queues to your
+* `Brits.DependencyInjection` - a package that contains an extension method that adds Brits to your
 `IServiceCollection` implementation instance. If you do not use dependency injection, then you should not install this
 package.
-* `Moogie.Queues.Providers.Memory` - include this whenever you want to use the `MemoryProvider` (usually when writing
+* `Brits.Providers.Memory` - include this whenever you want to use the `MemoryProvider` (usually when writing
 integration tests) and wherever you instantiate a `QueueManager` instance. You do not need to reference this package
 in projects where you are solely relying on the `IQueueManager` interface.
-* `Moogie.Queues.Providers.AmazonSQS` - include this whenever you want to use the `SQSProvider` and wherever you
+* `Brits.Providers.AmazonSQS` - include this whenever you want to use the `SQSProvider` and wherever you
 instantiate a `QueueManager` instance. You do not need to reference this package in projects where you are solely relying 
 on the `IQueueManager` interface.
-* `Moogie.Queues.Providers.AzureQueueStorage` - include this whenever you want to use the `AzureQueueStorage` and 
+* `Brits.Providers.AzureQueueStorage` - include this whenever you want to use the `AzureQueueStorage` and 
 wherever you instantiate a `QueueManager` instance. You do not need to reference this package in projects where you are
 solely relying on the `IQueueManager` interface.
 
-Then instantiate a `QueueManager` instance or add it to your `ServiceCollection` instance by using the `AddMoogieQueues`
-extension method provided by the `Moogie.Queues.DependencyInjection` package.
+Then instantiate a `QueueManager` instance or add it to your `ServiceCollection` instance by using the `AddBrits`
+extension method provided by the `Brits.DependencyInjection` package.
 
 ```csharp
-serviceCollection.AddMoogieEvents(new QueueRegistration
+serviceCollection.AddBrits(new QueueRegistration
 {
     Name = "default",
     QueueProvider = new MemoryProvider()
@@ -36,9 +36,9 @@ serviceCollection.AddMoogieEvents(new QueueRegistration
 
 ## Adding multiple queue providers
 
-Moogie.Queues gives you the ability to register multiple queue providers under one `QueueManager` out of the box.
+Brits gives you the ability to register multiple queue providers under one `QueueManager` out of the box.
 You can do this by calling the `AddQueue` method on your `QueueManager` instance or by passing a number of `QueueRegistration`
-instances into the `AddMoogieEvents` method.
+instances into the `AddBrits` method.
 
 By specifying a queue with the name of "default" you do not then need to specify the queue name when attempting to send
 `Message` or `Receivable` instances to that queue provider.
@@ -117,7 +117,7 @@ foreach (var message in receiveResponse.Messages)
 
 ## Provider Details
 
-Some queue providers and their abstracted implementations within Moogie.Queues have particular quirks or implementation 
+Some queue providers and their abstracted implementations within Brits have particular quirks or implementation 
 details that you should be aware of. 
 
 ### Amazon's Simple Queue Service Provider

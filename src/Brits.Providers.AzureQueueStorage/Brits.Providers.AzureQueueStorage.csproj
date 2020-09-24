@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Brits.Providers.AzureQueueStorage</PackageId>
+        <PackageTags>queueing;queue abstractions;sqs;queues;azure queues;</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Authors>l_symonds</Authors>
+        <RepositoryUrl>https://github.com/lsymonds/Brits</RepositoryUrl>
+        <PackageDescription>An Azure Queue Storage provider for Brits.</PackageDescription>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Brits.Providers.Core\Brits.Providers.Core.csproj" />
+      <ProjectReference Include="..\Brits\Brits.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Azure.Storage.Queues" Version="12.4.2" />
+    </ItemGroup>
+
+</Project>
