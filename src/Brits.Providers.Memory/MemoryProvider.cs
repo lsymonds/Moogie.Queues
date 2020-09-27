@@ -57,6 +57,11 @@ namespace Brits
             CancellationToken cancellationToken = default
         ) => receivable.SecondsToWait != null ? await LongPoll(receivable) : GetMessages(receivable);
 
+        /// <summary>
+        /// Mimics a long poll scenario available in other providers.
+        /// </summary>
+        /// <param name="receivable">The receivable to use to long poll and retrieve messages.</param>
+        /// <returns>A response containing any received messages.</returns>
         private async Task<ReceiveResponse> LongPoll(Receivable receivable)
         {
             var messagesReceived = new List<ReceivedMessage>();
@@ -76,6 +81,11 @@ namespace Brits
             return new ReceiveResponse {Messages = messagesReceived};
         }
 
+        /// <summary>
+        /// Retrieves messages that match the criteria defined in the receivable.
+        /// </summary>
+        /// <param name="receivable">The receivable to use to retrieve messages.</param>
+        /// <returns>A response containing any received messages.</returns>
         private ReceiveResponse GetMessages(Receivable receivable)
         {
             var messages = _messages
